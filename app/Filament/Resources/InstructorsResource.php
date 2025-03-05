@@ -17,7 +17,8 @@ use App\Filament\Resources\InstructorsResource\Pages;
 use App\Filament\Resources\InstructorsResource\RelationManagers;
 
 class InstructorsResource extends Resource
-{protected static ?string $model = InstructorsInstructorsM::class;
+{
+    protected static ?string $model = InstructorsInstructorsM::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
     protected static ?string $modelLabel = "Instructors";

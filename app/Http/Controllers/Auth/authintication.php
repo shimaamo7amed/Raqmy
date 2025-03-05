@@ -7,6 +7,7 @@ use App\services\Auth\AuthServices;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\ResendOtpRequest;
+use App\Http\Requests\Auth\ValidateOtpRequest;
 use App\Http\Requests\Auth\VerifyEmailRequest;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 use App\Http\Requests\Auth\UpdateProfileRequest;
@@ -152,7 +153,7 @@ class authintication extends BaseController
                 );
         }
     }
-    
+
     public function ForgetPassword(ForgetPasswordRequest $data)
     {
         try {
@@ -179,5 +180,32 @@ class authintication extends BaseController
                 );
         }
 
+    }
+
+    public function ValidateOtp(ValidateOtpRequest $dat)
+    {
+        try {
+            $user=$user=AuthServices::ValidateOtp($data->validated());
+            // dd($user);
+            if ($user) {
+                    return  SystemApiResponseServices::ReturnSuccess(
+                        [],
+                        __("Check Your Email.."),
+                        null
+                    );
+                } else {
+                    return  SystemApiResponseServices::ReturnFailed(
+                        null,
+                        __("Invalid Email..!"),
+                        null
+                    );
+                }
+        }catch (\Throwable $th) {
+            return SystemApiResponseServices::ReturnError(
+                    9800,
+                    null,
+                    $th->getMessage(),
+                );
+        }
     }
 }

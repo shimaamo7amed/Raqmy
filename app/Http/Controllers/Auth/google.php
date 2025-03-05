@@ -22,11 +22,14 @@ class google extends Controller
             $data = GoogleServices::handleGoogleCallback();
         // dd($data);
                 if ($data) {
-                        return  SystemApiResponseServices::ReturnSuccess(
-                            ["data"=>$data],
-                            __(""),
-                            null
-                        );
+                        // return  SystemApiResponseServices::ReturnSuccess(
+                        //     ["data"=>$data],
+                        //     __(""),
+                        //     null
+                        // );
+// return redirect('http://localhost:5176?token=' . $data['access_token']);
+      $queryParams = http_build_query($data);
+            return redirect('http://localhost:5173?' . $queryParams);
                     } else {
                         return  SystemApiResponseServices::ReturnFailed(
                             null,

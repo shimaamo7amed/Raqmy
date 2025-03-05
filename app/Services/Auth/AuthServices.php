@@ -13,27 +13,27 @@ use App\Mail\users\ResetPasswordCode;
 class AuthServices
 {
 
-    static public function GenerateNewCode()
-    {
+  static public function GenerateNewCode()
+  {
       $code=Str::random(6);
       if (UsersUsersM::where('code', $code)->exists()) {
       return Self::GenerateNewCode();
       }else{
       return $code;
       }
-    }
+  }
 
-    static public function Register(array $array)
-    {
-      // dd($array);
-        $user=UsersUsersM::create($array);
-        // dd($user);
-        Mail::to($user->email)->send(new VerifyCodeEmail($user->otp,$user->name, $user->email));
-        return $user;
-    }
+  static public function Register(array $array)
+  {
+    // dd($array);
+    $user=UsersUsersM::create($array);
+    // dd($user);
+    Mail::to($user->email)->send(new VerifyCodeEmail($user->otp,$user->name, $user->email));
+    return $user;
+  }
 
-    static public function VerifyEmail(array $array)
-    {
+  static public function VerifyEmail(array $array)
+  {
       // dd($array);
       $user=UsersUsersM::where([
       "code"=>$array['user_code'],
@@ -47,9 +47,9 @@ class AuthServices
       }else {
         return null;
       }
-    }
-    static public function ResendOtp(array $array)
-    {
+  }
+  static public function ResendOtp(array $array)
+  {
       $user=UsersUsersM::where(
         "email",$array['email']
       )->first();
@@ -67,10 +67,10 @@ class AuthServices
       } else {
             return false;
         }
-    }
+  }
 
-    static public function Login(array $array)
-    {
+  static public function Login(array $array)
+  {
         $token = auth("api")->attempt([
         'email' => $array['email'],
         'password' => $array['password']
@@ -80,29 +80,34 @@ class AuthServices
             'token_type' => 'Bearer',
         ];
         return $token ? $data : null;
-    }
+  }
 
-    static public function Logout()
-    {
+  static public function Logout()
+  {
       return auth()->logout();
       return auth("api")->user();
       return auth("api")->logout();
-    }
+  }
 
-   static public function ForgetPassword(array $array)
-   {
-       $user = UsersUsersM::where('email', $array['email'])->first();
+  static public function ForgetPassword(array $array)
+  {
+      $user = UsersUsersM::where('email', $array['email'])->first();
       if (!$user)
       {
         return null;
       }
       $otp = $array['otp'];
-     Mail::to($user->email)->send(new ResetPasswordCode($otp, $user->name, $user->email));
-     $user->otp = $otp;
-     $user->save();
+      Mail::to($user->email)->send(new ResetPasswordCode($otp, $user->name, $user->email));
+      $user->otp = $otp;
+      $user->save();
 
       return $user;
-   }
+  }
+
+  static public function ValidateOtp(array $array)
+  {
+    
+  }
 
 
 }

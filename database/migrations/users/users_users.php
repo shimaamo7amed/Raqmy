@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('social_id')->nullable();
             $table->string('social_type')->nullable();
+            // $table->string('device_info')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
