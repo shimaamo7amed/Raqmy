@@ -10,6 +10,7 @@ use App\Http\Requests\Auth\ResendOtpRequest;
 use App\Http\Requests\Auth\ValidateOtpRequest;
 use App\Http\Requests\Auth\VerifyEmailRequest;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
+use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\Auth\UpdateProfileRequest;
 use App\Http\Requests\Auth\ForgetPasswordRequest;
 use App\Services\system\SystemApiResponseServices;
@@ -31,7 +32,7 @@ class authintication extends BaseController
                 );
             } else {
                 return  SystemApiResponseServices::ReturnFailed(
-                    null,
+                    [],
                     __("Register Failed"),
                     null
                 );
@@ -58,7 +59,7 @@ class authintication extends BaseController
                     );
                 } else {
                     return  SystemApiResponseServices::ReturnFailed(
-                        null,
+                         [],
                         __("Your Email Verified Failed"),
                         null
                     );
@@ -85,7 +86,7 @@ class authintication extends BaseController
                     );
                 } else {
                     return  SystemApiResponseServices::ReturnFailed(
-                        null,
+                         [],
                         __("Invalid,Try Again..!"),
                         null
                     );
@@ -112,7 +113,7 @@ class authintication extends BaseController
                     );
                 } else {
                     return  SystemApiResponseServices::ReturnFailed(
-                        null,
+                        [],
                         __("Login Failed"),
                         null
                     );
@@ -167,7 +168,7 @@ class authintication extends BaseController
                     );
                 } else {
                     return  SystemApiResponseServices::ReturnFailed(
-                        null,
+                         [],
                         __("Invalid Email..!"),
                         null
                     );
@@ -182,21 +183,21 @@ class authintication extends BaseController
 
     }
 
-    public function ValidateOtp(ValidateOtpRequest $dat)
+    public function ValidateOtp(ValidateOtpRequest $data)
     {
         try {
-            $user=$user=AuthServices::ValidateOtp($data->validated());
+            $user=AuthServices::ValidateOtp($data->validated());
             // dd($user);
             if ($user) {
                     return  SystemApiResponseServices::ReturnSuccess(
                         [],
-                        __("Check Your Email.."),
+                        __("Successfully"),
                         null
                     );
                 } else {
                     return  SystemApiResponseServices::ReturnFailed(
-                        null,
-                        __("Invalid Email..!"),
+                        [],
+                        __("try Again "),
                         null
                     );
                 }
@@ -208,4 +209,33 @@ class authintication extends BaseController
                 );
         }
     }
+    public function ResetPassword(ResetPasswordRequest $data)
+    {
+        try {
+            $user=AuthServices::ResetPassword($data->validated());
+            // dd($user);
+            if ($user) {
+                    return  SystemApiResponseServices::ReturnSuccess(
+                        [],
+                        __("Your Password Reset Succ"),
+                        null
+                    );
+                } else {
+                    return  SystemApiResponseServices::ReturnFailed(
+                         [],
+                        __("try Again..!"),
+                        null
+                    );
+                }
+        }catch (\Throwable $th) {
+            return SystemApiResponseServices::ReturnError(
+                    9800,
+                    null,
+                    $th->getMessage(),
+                );
+        }
+    }
+
+
+
 }

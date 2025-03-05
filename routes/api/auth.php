@@ -14,6 +14,8 @@ Route::name("api.auth.")
     Route::post('resendOtp', 'ResendOtp')->name("ResendOtp");
     Route::post('login', 'Login')->name("Login");
     Route::post('forgetPassword', 'ForgetPassword')->name("ForgetPassword");
+    Route::post('validateOtp', 'ValidateOtp')->name("ValidateOtp");
+    Route::post('resetPassword', 'ResetPassword')->name("ResetPassword");
 
     });
     Route::name("Countries.")

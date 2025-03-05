@@ -106,8 +106,32 @@ class AuthServices
 
   static public function ValidateOtp(array $array)
   {
-    
+    $user=UsersUsersM::where(["otp"=>$array['otp']])->first();
+    // dd($user);
+    if ($user)
+    {
+      return true;
+    }else {
+      return false;
+    }
+
+
+
   }
 
+  static public function ResetPassword(array $array)
+  {
+    $user = UsersUsersM::where(
+    'email', $array['email'] )->first();
+    // dd($user);
+    if ($user && $user->otp == $array['otp']) {
+    $user->update([
+    'password' => $array['password'],
+    $user->save()
+    ]);
+    }
+    return $user;
+
+  }
 
 }
