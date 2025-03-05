@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Forms\ContactUS;
+use App\Http\Controllers\Forms\Instructors;
 use App\Http\Controllers\Categories\categories;
-use App\Http\Controllers\Instructors\instructors;
 
 // all routes without auth
 Route::name("api.app.")
@@ -23,5 +24,18 @@ Route::name("api.app.")
         ->group(function () {
         Route::get('All', 'GetAll')->name("GetAll");
         });
+
+          //Forms routes
+    Route::name("Forms.")
+    ->prefix("form/")
+    ->group(function () {
+        Route::controller(ContactUS::class)->group(function () {
+            Route::post('contactUs', 'ContactUS')->name("ContactUS");
+        });
+        Route::controller(Instructors::class)->group(function () {
+            Route::post('Instructors', 'Instructors')->name("Instructors");
+        });
+    });
+
     });
 

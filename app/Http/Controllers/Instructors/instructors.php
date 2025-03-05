@@ -23,7 +23,7 @@ class instructors extends Controller
                         );
                     } else {
                         return  SystemApiResponseServices::ReturnFailed(
-                            null,
+                            [],
                             __(""),
                             null
                         );
@@ -50,7 +50,7 @@ class instructors extends Controller
                         );
                     } else {
                         return  SystemApiResponseServices::ReturnFailed(
-                            null,
+                            [],
                             __(""),
                             null
                         );
