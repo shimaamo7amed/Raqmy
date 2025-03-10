@@ -31,6 +31,8 @@ return new class extends Migration
             $table->string('social_id')->nullable();
             $table->string('social_type')->nullable();
             $table->text('jwt_token')->nullable();
+            $table->foreignId('country_id')->references('id')->on('countries_countries')->constrained()->cascadeOnDelete();
+            $table->foreignId('government_id')->references('id')->on('countries_governments')->constrained()->cascadeOnDelete();
             // $table->string('device_info')->nullable();
             $table->timestamps();
             $table->softDeletes();

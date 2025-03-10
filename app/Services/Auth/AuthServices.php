@@ -9,6 +9,8 @@ use App\Mail\users\VerifyCodeEmail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\users\ResetPasswordCode;
+use App\Models\Countries\CountriesCountriesM;
+use App\Models\Countries\CountriesGovernmentM;
 
 class AuthServices
 {
@@ -23,14 +25,17 @@ class AuthServices
       }
   }
 
-  static public function Register(array $array)
+  public static function Register(array $array)
   {
+   
     // dd($array);
-    $user=UsersUsersM::create($array);
+    $user = UsersUsersM::create($array);
     // dd($user);
-    Mail::to($user->email)->send(new VerifyCodeEmail($user->otp,$user->name, $user->email));
+    Mail::to($user->email)->send(new VerifyCodeEmail($user->otp, $user->name, $user->email));
+
     return $user;
   }
+
 
   static public function VerifyEmail(array $array)
   {

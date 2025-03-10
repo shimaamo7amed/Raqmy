@@ -18,20 +18,21 @@ use Illuminate\Routing\Controller as BaseController;
 
 class authintication extends BaseController
 {
+  
     public function Register(RegisterRequest $data)
     {
+        // dd($data);
         try {
-            $user = DB::transaction(function () use ($data) {
-                return AuthServices::Register($data->validated());
-            });
+            $user =AuthServices::Register($data->validated());
+
             if ($user) {
-                return  SystemApiResponseServices::ReturnSuccess(
+                return SystemApiResponseServices::ReturnSuccess(
                     ["user" => $user],
                     __("Register Successfully"),
                     null
                 );
             } else {
-                return  SystemApiResponseServices::ReturnFailed(
+                return SystemApiResponseServices::ReturnFailed(
                     [],
                     __("Register Failed"),
                     null
@@ -45,6 +46,7 @@ class authintication extends BaseController
             );
         }
     }
+
 
     public function VerifyEmail(VerifyEmailRequest $data)
     {
