@@ -20,12 +20,9 @@ return new class extends Migration
             $table->integer('quantity');
             $table->decimal('price');
             $table->boolean('status')->default(false);
-            $table->bigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->bigInteger('course_id');
-            $table->foreign('course_id')->references('id')->on('courses');
-            $table->bigInteger('order_id');
-            $table->foreign('order_id')->references('id')->on('orders');
+            $table->foreignId('user_id')->references('id')->on('users_users')->constrained()->cascadeOnDelete();
+            $table->foreignId('course_id')->references('id')->on('courses_courses')->constrained()->cascadeOnDelete();
+            $table->foreignId('order_id')->references('id')->on('orders_orders')->constrained()->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });

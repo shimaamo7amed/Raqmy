@@ -17,8 +17,7 @@ return new class extends Migration
             $table->collation = 'utf8_general_ci';
             $table->id();
             $table->string('code')->unique();
-            $table->bigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignId('user_id')->references('id')->on('users_users')->constrained()->cascadeOnDelete();
             $table->string('payment_id')->nullable();
             $table->decimal('amount');
             $table->enum('status', ['pending', 'completed', 'failed'])->default('pending');

@@ -16,10 +16,9 @@ return new class extends Migration
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
             $table->id();
-           $table->string('code')->unique();
+            $table->string('code')->unique();
             $table->string('video');
-            $table->bigInteger('course_id');
-            $table->foreign('course_id')->references('id')->on('courses');
+            $table->foreignId('course_id')->references('id')->on('courses_courses')->constrained()->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });

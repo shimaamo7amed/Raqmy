@@ -27,10 +27,8 @@ return new class extends Migration
             $table->enum('delivary_method', ['live', 'recorded'])->default('recorded');
             $table->string('time')->nullable();
             $table->decimal('discount')->nullable();
-            $table->bigInteger('instructors_id');
-            $table->foreign('instructors_id')->references('id')->on('instructors');
-            $table->bigInteger('category_id');
-            $table->foreign('category_id')->references('id')->on('categories');
+            $table->foreignId('instructors_id')->references('id')->on('users_instructors')->constrained()->cascadeOnDelete();
+            $table->foreignId('category_id')->references('id')->on('categories_categories')->constrained()->cascadeOnDelete();
             $table->string('timeZone')->nullable();
             $table->timestamps();
             $table->softDeletes();

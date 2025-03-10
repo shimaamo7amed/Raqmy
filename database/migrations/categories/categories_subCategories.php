@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::disableForeignKeyConstraints();
-        Schema::create('courses_module_items', function (Blueprint $table) {
+        Schema::create('categories_subCategories', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
             $table->id();
             $table->string('code')->unique();
-            $table->foreignId('module_id')->references('id')->on('courses_modules')->constrained()->cascadeOnDelete();
-            $table->json('content');
+            $table->json('name');
+            $table->foreignId('category_id')->references('id')->on('categories_categories')->constrained()->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,7 +30,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('courses_module_items');
+        Schema::dropIfExists('categories_subCategories');
         Schema::enableForeignKeyConstraints();
     }
 };

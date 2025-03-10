@@ -17,10 +17,8 @@ return new class extends Migration
             $table->collation = 'utf8_general_ci';
             $table->id();
             $table->string('code')->unique();
-            $table->bigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->bigInteger('course_id');
-            $table->foreign('course_id')->references('id')->on('courses');
+            $table->foreignId('user_id')->references('id')->on('users_users')->constrained()->cascadeOnDelete();
+            $table->foreignId('course_id')->references('id')->on('courses_courses')->constrained()->cascadeOnDelete();
             $table->timestamp('enrrolled_at');
             $table->timestamps();
             $table->softDeletes();
