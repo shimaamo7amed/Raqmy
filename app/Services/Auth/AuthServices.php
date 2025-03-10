@@ -71,16 +71,34 @@ class AuthServices
 
   static public function Login(array $array)
   {
-        $token = auth("api")->attempt([
+    $user = UsersUsersM::where('email', $array['email'])->first();
+
+    if (!$user || !\Hash::check($array['password'], $user->password)) {
+        return null; 
+    }
+    if ($user->jwt_token) {
+        return 'device_error'; 
+    }
+    $token = auth("api")->attempt([
         'email' => $array['email'],
         'password' => $array['password']
-        ]);
+    ]);
+
+    if ($token) {
+        $user->update(['jwt_token' => $token]);
+
         $data = [
+            'user' => $user,
             'access_token' => $token,
             'token_type' => 'Bearer',
         ];
-        return $token ? $data : null;
+
+        return $data;
+    }
+
+    return null;
   }
+
 
   static public function Logout()
   {

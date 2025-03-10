@@ -25,6 +25,7 @@ class UsersUsersM extends Authenticatable  implements JWTSubject
         'image',
         'social_id',
         'social_type',
+        'jwt_token',
     ];
     protected $hidden = [
         'id',

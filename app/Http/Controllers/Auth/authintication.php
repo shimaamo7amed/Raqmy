@@ -103,55 +103,65 @@ class authintication extends BaseController
     public function Login(LoginRequest $data)
     {
         try {
-            $user=AuthServices::Login($data->validated());
-            // dd($user);
-            if ($user) {
-                    return  SystemApiResponseServices::ReturnSuccess(
-                        ["user"=>$user],
-                        __("Login Succ"),
-                        null
-                    );
-                } else {
-                    return  SystemApiResponseServices::ReturnFailed(
-                        [],
-                        __("Login Failed"),
-                        null
-                    );
-                }
-        }catch (\Throwable $th) {
-            return SystemApiResponseServices::ReturnError(
-                    9800,
-                    null,
-                    $th->getMessage(),
+            $user = AuthServices::Login($data->validated());
+            if ($user === 'device_error')
+            {
+                return SystemApiResponseServices::ReturnFailed(
+                [],
+                __("You are already logged in from another device."),
+                    null
                 );
+            }
+            if ($user)
+            {
+            return SystemApiResponseServices::ReturnSuccess(
+                ["user" => $user],
+                __("Login Succ"),
+                null
+                );
+            } else {
+                return SystemApiResponseServices::ReturnFailed(
+                    [],
+                    __("Login Failed"),
+                    null
+                );
+            }
+        } catch (\Throwable $th) {
+            return SystemApiResponseServices::ReturnError(
+                9800,
+                null,
+                $th->getMessage(),
+            );
         }
-
     }
 
     public function Logout()
     {
-      try {
-          JWTAuth::invalidate(JWTAuth::getToken());
-            auth()->logout();
-            if (!auth()->check()) {
+        try {
+            $user = auth()->user();
+
+            if ($user) {
+                JWTAuth::invalidate(JWTAuth::getToken());
+                $user->update(['jwt_token' => null]);
                 return SystemApiResponseServices::ReturnSuccess(
                     [],
                     __("Logout Succ"),
                     null
                 );
-            } else {
-                return SystemApiResponseServices::ReturnFailed(
-                    [],
-                    __("Logout Failed"),
-                    null
-                );
             }
-      } catch (\Throwable $th) {
+
+            return SystemApiResponseServices::ReturnFailed(
+                [],
+                __("Logout Failed"),
+                null
+            );
+
+        } catch (\Throwable $th) {
             return SystemApiResponseServices::ReturnError(
-                    9800,
-                    null,
-                    $th->getMessage(),
-                );
+                9800,
+                null,
+                $th->getMessage(),
+            );
         }
     }
 
