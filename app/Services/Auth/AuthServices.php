@@ -76,19 +76,24 @@ class AuthServices
 
   static public function Login(array $array)
   {
-    $user = UsersUsersM::where('email', $array['email'])->first();
-
-    if (!$user || !\Hash::check($array['password'], $user->password)) {
-        return null; 
+    // dd($array);
+    $user = UsersUsersM::where('email', $array['email'])
+    ->orWhere('user_name', $array['email'])
+    ->first();
+    //  dd($user);
+    if (!$user || !\Hash::check($array['password'], $user->password))
+    {
+      return null;
     }
     if ($user->jwt_token) {
-        return 'device_error'; 
+      return 'device_error';
     }
-    $token = auth("api")->attempt([
-        'email' => $array['email'],
-        'password' => $array['password']
+   $field = filter_var($array['email'], FILTER_VALIDATE_EMAIL) ? 'email' : 'user_name';
+    $token = auth('api')->attempt([
+        $field => $array['email'],
+        'password' => $array['password'],
     ]);
-
+     //  dd($token);
     if ($token) {
         $user->update(['jwt_token' => $token]);
 
