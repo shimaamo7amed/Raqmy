@@ -47,12 +47,10 @@ class SubCategoriesResource extends Resource
                             ->label('Name (Arabic)')
                             ->required(),
                         Select::make('category_id')
-                        ->label('Category')
-                        ->options(
-                        CategoriesCategoriesM::query()->get()->mapWithKeys(function ($category) {
-                        return [$category->id => "{$category->name['en']} - {$category->name['ar']}"];
-                        })->toArray()
-                        )
+                            ->label('category')
+                            ->required()
+                            ->relationship('category', 'name')
+                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->name['en'] ?? ''),
 
             ]);
     }

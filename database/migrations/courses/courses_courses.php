@@ -23,12 +23,13 @@ return new class extends Migration
             $table->json('goals');
             $table->enum('status', ['paid', 'free'])->default('paid');
             $table->json('users');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->enum('delivary_method', ['live', 'recorded'])->default('recorded');
-            $table->string('time')->nullable();
             $table->decimal('discount')->nullable();
+            $table->decimal('price_after')->nullable();
             $table->foreignId('instructors_id')->references('id')->on('users_instructors')->constrained()->cascadeOnDelete();
             $table->foreignId('category_id')->references('id')->on('categories_categories')->constrained()->cascadeOnDelete();
+            $table->foreignId('subcategory_id')->references('id')->on('categories_subCategories')->constrained()->cascadeOnDelete();
             $table->string('timeZone')->nullable();
             $table->timestamps();
             $table->softDeletes();

@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Models\Categories;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Categories\CategoriesCategoriesM;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CategoriesSubCategoriesM extends Model
 {
@@ -17,4 +18,9 @@ class CategoriesSubCategoriesM extends Model
         protected $casts = [
         'name' => 'array',
     ];
+
+     public function category()
+    {
+        return $this->belongsTo(CategoriesCategoriesM::class);
+    }
 }

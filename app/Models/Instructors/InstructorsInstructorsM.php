@@ -2,8 +2,9 @@
 
 namespace App\Models\Instructors;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Courses\CoursesCoursesM;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class InstructorsInstructorsM extends Model
 {
@@ -22,4 +23,9 @@ class InstructorsInstructorsM extends Model
         'name' => 'array',
         'desc' => 'array',
     ];
+
+       public function courses()
+    {
+        return $this->hasMany(CoursesCoursesM::class, 'instructors_id');
+    }
 }
