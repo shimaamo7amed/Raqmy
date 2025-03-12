@@ -1,9 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Courses\courses;
 use App\Http\Controllers\Forms\ContactUS;
-use App\Http\Controllers\Forms\Instructors;
 use App\Http\Controllers\Categories\categories;
+use App\Http\Controllers\Forms\InstructorsForm;
+use App\Http\Controllers\Instructors\instructors;
 
 // all routes without auth
 Route::name("api.app.")
@@ -17,6 +19,14 @@ Route::name("api.app.")
         Route::get('All', 'GetAll')->name("GetAll");
         Route::get('{code}', 'GetByCode')->name("Details");
         });
+   // Courses routes
+        Route::name("Courses.")
+        ->prefix("Courses/")
+        ->controller(courses::class)
+        ->group(function () {
+        Route::get('All', 'GetAll')->name("GetAll");
+        });
+
         // Categories routes
         Route::name("Categories.")
         ->prefix("Categories/")
@@ -32,7 +42,7 @@ Route::name("api.app.")
         Route::controller(ContactUS::class)->group(function () {
             Route::post('contactUs', 'ContactUS')->name("ContactUS");
         });
-        Route::controller(Instructors::class)->group(function () {
+        Route::controller(InstructorsForm::class)->group(function () {
             Route::post('Instructors', 'Instructors')->name("Instructors");
         });
     });

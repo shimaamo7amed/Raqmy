@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models\Courses;
+use App\Models\Courses\CoursesVideosM;
 use App\Models\Courses\CoursesModulesM;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Categories\CategoriesCategoriesM;
@@ -12,7 +13,8 @@ class CoursesCoursesM extends Model
        protected $table = "courses_courses";
     public $timestamps = true;
 
-    protected $fillable = [
+    protected $fillable =
+    [
         'code',
         'name',
         'desc',
@@ -29,7 +31,8 @@ class CoursesCoursesM extends Model
         'subcategory_id',
         'timeZone',
     ];
-     protected $casts = [
+    protected $casts =
+    [
         'name' => 'array',
         'desc' => 'array',
         'goals' => 'array',
@@ -45,11 +48,15 @@ class CoursesCoursesM extends Model
     }
     public function subcategory()
     {
-    return $this->belongsTo(CategoriesSubCategoriesM::class, 'subcategory_id');
+        return $this->belongsTo(CategoriesSubCategoriesM::class, 'subcategory_id');
     }
     public function modules()
     {
         return $this->hasMany(CoursesModulesM::class, 'course_id');
     }
 
+     public function courseVideo()
+    {
+        return $this->hasMany(CoursesVideosM::class, 'course_id');
+    }
 }

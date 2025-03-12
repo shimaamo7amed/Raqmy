@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
 use App\Models\Courses\CoursesCoursesM;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Categories\CategoriesCategoriesM;
@@ -114,7 +115,13 @@ class CoursesResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('id'),
+                TextColumn::make('name.en')
+                ->label('Name (English)'),
+                TextColumn::make('desc.en')
+                ->label('Descrebtion(English)'),
+                TextColumn::make('price')
+                ->label('Price'),
             ])
             ->filters([
                 //

@@ -8,7 +8,7 @@ use App\Http\Requests\Forms\InstructorsRequest;
 use App\Services\Forms\FormsInstructorsServices;
 use App\Services\system\SystemApiResponseServices;
 
-class Instructors extends Controller
+class InstructorsForm extends Controller
 {
     public function Instructors(InstructorsRequest $data)
     {
