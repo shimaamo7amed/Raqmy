@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models\Courses;
+use App\Models\Courses\CoursesModulesM;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Categories\CategoriesCategoriesM;
 use App\Models\Categories\CategoriesSubCategoriesM;
@@ -43,8 +44,12 @@ class CoursesCoursesM extends Model
         return $this->belongsTo(CategoriesCategoriesM::class, 'category_id');
     }
     public function subcategory()
-{
+    {
     return $this->belongsTo(CategoriesSubCategoriesM::class, 'subcategory_id');
-}
+    }
+    public function modules()
+    {
+        return $this->hasMany(CoursesModulesM::class, 'course_id');
+    }
 
 }

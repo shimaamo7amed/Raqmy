@@ -20,8 +20,8 @@ class RegisterRequest extends FormRequest
             'otp' => rand(123652, 986412),
         ]);
 
-        $countryName = CountriesCountriesM::find($this->country_id)?->name_en;
-        $governmentName = CountriesGovernmentM::find($this->government_id)?->name_en;
+        $countryName = CountriesCountriesM::find($this->country_id)?->label_en;
+        $governmentName = CountriesGovernmentM::find($this->government_id)?->label_en;
             $location = json_encode([
                 'government_name' => $governmentName,
                 'country_name' => $countryName,
