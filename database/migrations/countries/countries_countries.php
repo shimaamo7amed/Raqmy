@@ -16,8 +16,10 @@ return new class extends Migration
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
             $table->id();
-            $table->string('name_en')->unique();
-            $table->string('name_ar')->unique();
+            $table->string('label_en')->unique();
+            $table->string('label_ar')->unique();
+            $table->string('value_en')->unique();
+            $table->string('value_ar')->unique();
             $table->timestamps();
             $table->softDeletes();
         });

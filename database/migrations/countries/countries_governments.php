@@ -16,8 +16,10 @@ return new class extends Migration
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
             $table->id();
-            $table->string('name_en');
-            $table->string('name_ar');
+            $table->string('label_en');
+            $table->string('label_ar');
+            $table->string('value_en');
+            $table->string('value_ar');
             $table->unsignedBigInteger('country_id');
             $table->foreign('country_id')->references('id')->on('countries_countries')->onDelete('cascade');
             $table->timestamps();

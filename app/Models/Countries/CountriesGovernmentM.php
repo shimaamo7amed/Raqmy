@@ -11,8 +11,10 @@ class CountriesGovernmentM extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'name_en',
-        'name_ar',
+        'label_en',
+        'label_ar',
+        'value_en',
+        'value_ar',
         'country_id'
     ];
         public function country()
