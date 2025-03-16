@@ -10,7 +10,10 @@ use Illuminate\Support\Str;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
 use App\Models\Courses\CoursesCoursesM;
+use Filament\Forms\Components\Repeater;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Categories\CategoriesCategoriesM;
@@ -59,18 +62,6 @@ class CoursesResource extends Resource
                             ->required(),
                         Forms\Components\TextInput::make('discount')
                             ->label('Discount'),
-                        Forms\Components\TextInput::make('goals.en')
-                            ->label('Goals (English)')
-                            ->required(),
-                        Forms\Components\TextInput::make('goals.ar')
-                            ->label('Goals (Arabic)')
-                            ->required(),
-                        Forms\Components\TextInput::make('users.en')
-                            ->label('Students (English)')
-                            ->required(),
-                        Forms\Components\TextInput::make('users.ar')
-                            ->label('Students (Arabic)')
-                            ->required(),
                         Select::make('status')
                             ->label('Status')
                             ->required()
@@ -108,7 +99,34 @@ class CoursesResource extends Resource
                             ->label("Image")
                             ->disk('public')
                             ->directory('CoursesImage'),
-                        ]);
+                        Repeater::make('goals')
+                            ->label('Course Goals')
+                        ->schema([
+                        TextInput::make('en')
+                            ->label('Goal (English)')
+                            ->required(),
+                        TextInput::make('ar')
+                        ->label('Goal (Arabic)')
+                        ->required(),
+                        ])
+                        ->columns(2)
+                        ->minItems(1)
+                        ->addActionLabel('Add New Goal'),
+                        Repeater::make('users')
+                            ->label('Users')
+                        ->schema([
+                        TextInput::make('en')
+                            ->label('Users (English)')
+                            ->required(),
+                        TextInput::make('ar')
+                        ->label('Users (Arabic)')
+                        ->required(),
+                        ])
+                        ->columns(2)
+                        ->minItems(1)
+                        ->addActionLabel('Add New User'),
+
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -117,9 +135,8 @@ class CoursesResource extends Resource
             ->columns([
                 TextColumn::make('id'),
                 TextColumn::make('name.en')
-                ->label('Name (English)'),
-                TextColumn::make('desc.en')
-                ->label('Descrebtion(English)'),
+                ->label('Name'),
+                ImageColumn::make("image"),
                 TextColumn::make('price')
                 ->label('Price'),
             ])

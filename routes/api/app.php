@@ -1,8 +1,8 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Courses\courses;
 use App\Http\Controllers\Forms\ContactUS;
+use App\Http\Controllers\Courses\courseRates;
 use App\Http\Controllers\Categories\categories;
 use App\Http\Controllers\Forms\InstructorsForm;
 use App\Http\Controllers\Instructors\instructors;
@@ -25,8 +25,9 @@ Route::name("api.app.")
         ->controller(courses::class)
         ->group(function () {
         Route::get('All', 'GetAll')->name("GetAll");
+        Route::get('{code}', 'GetByCode')->name("GetByCode");
+        Route::post('search','search')->name("search");
         });
-
         // Categories routes
         Route::name("Categories.")
         ->prefix("Categories/")
@@ -47,5 +48,16 @@ Route::name("api.app.")
         });
     });
 
+});
+
+Route::name("api.app.")
+    ->middleware(['api_with_auth'])
+    ->group(function () {
+    Route::name("Courses.")
+        ->prefix("Courses/")
+        ->controller(courseRates::class)
+        ->group(function () {
+        Route::post('Rate', 'CourseRates')->name("courseRates");
     });
+});
 

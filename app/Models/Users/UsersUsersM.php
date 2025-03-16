@@ -2,6 +2,7 @@
 
 namespace App\Models\Users;
 
+use App\Models\Rates\CourseRatesM;
 use App\Models\Countries\CountriesCountriesM;
 use App\Models\Countries\CountriesGovernmentM;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
@@ -66,6 +67,10 @@ class UsersUsersM extends Authenticatable implements JWTSubject
     public function government()
     {
         return $this->belongsTo(CountriesGovernmentM::class, 'government_id');
+    }
+    public function rates()
+    {
+        return $this->HasMany(CourseRatesM::class, 'user_id');
     }
 
     public function getJWTIdentifier()

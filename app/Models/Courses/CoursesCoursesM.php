@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models\Courses;
+use App\Models\Rates\CourseRatesM;
 use App\Models\Courses\CoursesVideosM;
 use App\Models\Courses\CoursesModulesM;
 use Illuminate\Database\Eloquent\Model;
@@ -55,8 +56,12 @@ class CoursesCoursesM extends Model
         return $this->hasMany(CoursesModulesM::class, 'course_id');
     }
 
-     public function courseVideo()
+    public function courseVideo()
     {
         return $this->hasMany(CoursesVideosM::class, 'course_id');
+    }
+    public function rates()
+    {
+        return $this->HasMany(CourseRatesM::class, 'course_id');
     }
 }

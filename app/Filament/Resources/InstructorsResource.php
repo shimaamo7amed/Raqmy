@@ -76,11 +76,11 @@ class InstructorsResource extends Resource
     {
         return $table
             ->columns([
-               Tables\Columns\TextColumn::make('id'),
+                Tables\Columns\TextColumn::make('id'),
                 Tables\Columns\TextColumn::make('code'),
                 ImageColumn::make("image"),
-                    Tables\Columns\TextColumn::make('name.en')
-                    ->label('Name (English)'),
+                Tables\Columns\TextColumn::make('name.en')
+                ->label('Name (English)'),
                 Tables\Columns\TextColumn::make('name.ar')
                     ->label('Name (Arabic)'),
             ])
