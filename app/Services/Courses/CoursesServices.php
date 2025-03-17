@@ -62,13 +62,15 @@ class CoursesServices
         ->where('user_id', $array['user_id'])
         ->first();
 
-    if ($existingRate) {
-        $existingRate->update(['rates' => $array['rates']]);
-        return $existingRate;
-    } else {
-        $courseRates = CourseRatesM::create($array);
-        return $courseRates;
-    }
+        if ($existingRate)
+        {
+            $existingRate->update(['rates' => $array['rates']]);
+            return $existingRate;
+        } else
+        {
+            $courseRates = CourseRatesM::create($array);
+            return $courseRates;
+        }
 
 
     }

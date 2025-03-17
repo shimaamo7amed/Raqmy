@@ -8,9 +8,11 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use App\Models\Courses\CoursesCoursesM;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\ImageColumn;
@@ -42,65 +44,67 @@ class CoursesResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Hidden::make('code')
-                        ->default(fn () => self::GenerateNewCode()),
-                        Forms\Components\TextInput::make('name.en')
-                            ->label('Name (English)')
-                            ->required(),
-                        Forms\Components\TextInput::make('name.ar')
-                            ->label('Name (Arabic)')
-                            ->required(),
-                             Forms\Components\Textarea::make('desc.en')
-                            ->label('Descrebtion(English)')
-                            ->required(),
-                        Forms\Components\Textarea::make('desc.ar')
-                            ->label('Descrebtion (Arabic)')
-                            ->required(),
-                        Forms\Components\TextInput::make('price')
-                            ->label('Price')
-                            ->numeric()
-                            ->required(),
-                        Forms\Components\TextInput::make('discount')
-                            ->label('Discount'),
-                        Select::make('status')
-                            ->label('Status')
-                            ->required()
-                            ->options([
-                            'paid' => 'Paid',
-                            'free' => 'Free',
-                        ]),
-                        Select::make('delivary_method')
-                            ->label('Delivary Method')
-                            ->required()
-                            ->options([
+                Hidden::make('code')
+                    ->default(fn () => self::GenerateNewCode()),
+                TextInput::make('name.en')
+                    ->label('Name (English)')
+                    ->required(),
+                TextInput::make('name.ar')
+                    ->label('Name (Arabic)')
+                    ->required(),
+                Textarea::make('desc.en')
+                    ->label('Descrebtion(English)')
+                    ->required(),
+                Textarea::make('desc.ar')
+                    ->label('Descrebtion (Arabic)')
+                    ->required(),
+                TextInput::make('price')
+                    ->label('Price')
+                    ->numeric()
+                    ->required()
+                    ->live(),
+                TextInput::make('discount')
+                    ->label('Discount')
+                    ->numeric()
+                    ->default(0)
+                    ->live(),
+                Select::make('status')
+                    ->label('Status')
+                    ->required()
+                    ->options([
+                        'paid' => 'Paid',
+                        'free' => 'Free',
+                    ]),
+                    Select::make('delivary_method')
+                        ->label('Delivary Method')
+                        ->required()
+                        ->options
+                        ([
                             'live' => 'Live',
                             'recorded' => 'Recorded',
                         ]),
-                        Select::make('category_id')
-                            ->label('Category')
-                            ->required()
-                            ->relationship('category', 'name')
-                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->name['en'] ?? ''),
-
-                        Select::make('subcategory_id')
-                            ->label('Sub Category')
-                            ->required()
-                            ->relationship('subcategory', 'name')
-                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->name['en'] ?? ''),
-
-                        Select::make('instructors_id')
-                            ->label('Instructor')
-                            ->required()
-                            ->relationship('instructor', 'name')
-                            ->getOptionLabelFromRecordUsing(fn ($record) => $record->name['en'] ?? ''),
-
-                        FileUpload::make('image')
-                            ->required()
-                            ->label("Image")
-                            ->disk('public')
-                            ->directory('CoursesImage'),
-                        Repeater::make('goals')
-                            ->label('Course Goals')
+                    Select::make('category_id')
+                        ->label('Category')
+                        ->required()
+                        ->relationship('category', 'name')
+                        ->getOptionLabelFromRecordUsing(fn ($record) => $record->name['en'] ?? ''),
+                    Select::make('subcategory_id')
+                        ->label('Sub Category')
+                        ->required()
+                        ->relationship('subcategory', 'name')
+                        ->getOptionLabelFromRecordUsing(fn ($record) => $record->name['en'] ?? ''),
+                    Select::make('instructors_id')
+                        ->label('Instructor')
+                        ->required()
+                        ->relationship('instructor', 'name')
+                        ->getOptionLabelFromRecordUsing(fn ($record) => $record->name['en'] ?? ''),
+                    FileUpload::make('image')
+                        ->required()
+                        ->label("Image")
+                        ->disk('public')
+                        ->directory('CoursesImage'),
+                    Repeater::make('goals')
+                        ->label('Course Goals')
                         ->schema([
                         TextInput::make('en')
                             ->label('Goal (English)')
@@ -112,8 +116,8 @@ class CoursesResource extends Resource
                         ->columns(2)
                         ->minItems(1)
                         ->addActionLabel('Add New Goal'),
-                        Repeater::make('users')
-                            ->label('Users')
+                    Repeater::make('users')
+                        ->label('Users')
                         ->schema([
                         TextInput::make('en')
                             ->label('Users (English)')
@@ -125,8 +129,7 @@ class CoursesResource extends Resource
                         ->columns(2)
                         ->minItems(1)
                         ->addActionLabel('Add New User'),
-
-            ]);
+        ]);
     }
 
     public static function table(Table $table): Table
