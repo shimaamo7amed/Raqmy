@@ -33,5 +33,7 @@ Route::name("api.auth.")
     ->controller(authintication::class)
     ->group(function () {
     Route::post('logout', 'Logout')->name("Logout");
+    Route::post('deleteMyAccount/{code}', 'DeleteMyAccount')->name("DeleteMyAccount");
+    Route::post('changePassword', 'ChangePassword')->name("ChangePassword");
     });
 });

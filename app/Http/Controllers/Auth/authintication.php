@@ -12,6 +12,7 @@ use App\Http\Requests\Auth\VerifyEmailRequest;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\Auth\UpdateProfileRequest;
+use App\Http\Requests\Auth\ChangePasswordRequest;
 use App\Http\Requests\Auth\ForgetPasswordRequest;
 use App\Services\system\SystemApiResponseServices;
 use Illuminate\Routing\Controller as BaseController;
@@ -245,6 +246,60 @@ class authintication extends BaseController
                     null,
                     $th->getMessage(),
                 );
+        }
+    }
+
+    public function DeleteMyAccount($code)
+    {
+        try {
+            $user = AuthServices::DeleteMyAccount($code);
+            // dd($user);
+            if ($user) {
+                 return  SystemApiResponseServices::ReturnSuccess(
+                        [],
+                        __("DeletedSuccessfully"),
+                        null
+                    );
+                } else {
+                    return  SystemApiResponseServices::ReturnFailed(
+                         [],
+                        __("UserNotFound"),
+                        null
+                    );
+            }
+        } catch (\Throwable $th) {
+            return SystemApiResponseServices::ReturnError(
+                9800,
+                null,
+                $th->getMessage(),
+            );
+        }
+    }
+
+    public function ChangePassword(ChangePasswordRequest $data)
+    {
+        try {
+            $user=AuthServices::ChangePassword($data->validated());
+            // dd($user);
+            if ($user) {
+                  return  SystemApiResponseServices::ReturnSuccess(
+                        [],
+                        __("Your Password Changed Succ"),
+                        null
+                    );
+                } else {
+                    return  SystemApiResponseServices::ReturnFailed(
+                        [],
+                        __("try Again..!"),
+                        null
+                    );
+            }
+        } catch (\Throwable $th) {
+            return SystemApiResponseServices::ReturnError(
+                9800,
+                null,
+                $th->getMessage(),
+            );
         }
     }
 

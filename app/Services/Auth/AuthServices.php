@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use App\Models\Users\UsersUsersM;
 use App\Mail\users\VerifyCodeEmail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\users\ResetPasswordCode;
 use App\Models\Countries\CountriesCountriesM;
@@ -27,7 +28,6 @@ class AuthServices
 
   public static function Register(array $array)
   {
-   
     // dd($array);
     $user = UsersUsersM::create($array);
     // dd($user);
@@ -160,6 +160,31 @@ class AuthServices
     }
     return $user;
 
+  }
+
+  static public function DeleteMyAccount($code)
+  {
+        $user = UsersUsersM::where('code', $code)->first();
+        if ($user) {
+            $user->delete();
+            // dd($user);
+            return true;
+        }
+        $user->deleted=true;
+        return false;
+  }
+
+  static public function ChangePassword(array $array)
+  {
+     // dd($array);
+      $user = Auth::user();
+        if (!Hash::check($array['password'], $user->password)) {
+          return false;
+        }
+        $user->password =$array['new_password'];
+        $user->save();
+
+        return true;
   }
 
 }
