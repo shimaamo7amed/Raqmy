@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Auth\Changes;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ChangePasswordRequest extends FormRequest
+class ChangePhoneRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -13,10 +13,7 @@ class ChangePasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-           'password' => 'required',
-            'new_password' => 'required|string|confirmed'
-
-
+        "phone" => "required|string|min_digits:11|max_digits:15",
         ];
     }
 }

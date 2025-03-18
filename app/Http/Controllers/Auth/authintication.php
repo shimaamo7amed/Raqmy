@@ -89,9 +89,9 @@ class authintication extends BaseController
                     );
                 } else {
                     return  SystemApiResponseServices::ReturnFailed(
-                         [],
-                        __("Invalid,Try Again..!"),
-                        null
+                    [],
+                    __("Invalid,Try Again..!"),
+                    null
                     );
                 }
        } catch (\Throwable $th) {
@@ -151,13 +151,14 @@ class authintication extends BaseController
                     __("Logout Succ"),
                     null
                 );
-            }
+            }else{
 
-            return SystemApiResponseServices::ReturnFailed(
-                [],
-                __("Logout Failed"),
-                null
-            );
+                return SystemApiResponseServices::ReturnFailed(
+                    [],
+                    __("Logout Failed"),
+                    null
+                );
+            }
 
         } catch (\Throwable $th) {
             return SystemApiResponseServices::ReturnError(
@@ -264,33 +265,6 @@ class authintication extends BaseController
                     return  SystemApiResponseServices::ReturnFailed(
                          [],
                         __("UserNotFound"),
-                        null
-                    );
-            }
-        } catch (\Throwable $th) {
-            return SystemApiResponseServices::ReturnError(
-                9800,
-                null,
-                $th->getMessage(),
-            );
-        }
-    }
-
-    public function ChangePassword(ChangePasswordRequest $data)
-    {
-        try {
-            $user=AuthServices::ChangePassword($data->validated());
-            // dd($user);
-            if ($user) {
-                  return  SystemApiResponseServices::ReturnSuccess(
-                        [],
-                        __("Your Password Changed Succ"),
-                        null
-                    );
-                } else {
-                    return  SystemApiResponseServices::ReturnFailed(
-                        [],
-                        __("try Again..!"),
                         null
                     );
             }

@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class VerifyCodeEmail extends Mailable
+class EmailOTP extends Mailable
 {
     use Queueable, SerializesModels;
     public $name;
@@ -23,13 +23,14 @@ class VerifyCodeEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-        subject: 'Verify Your Email',
+        subject: 'Verify  Email OTP',
         );
     }
     public function content(): Content
     {
         return new Content(
-            view: 'mails.verify',
+            // htmlString: "Youd Verfy Code <br>" . $this->code
+            view: 'mails.verifyOtp',
             with: [
                 "code" => $this->code,
                 'name' => $this->name,

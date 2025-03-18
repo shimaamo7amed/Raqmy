@@ -62,12 +62,24 @@ class CoursesResource extends Resource
                     ->label('Price')
                     ->numeric()
                     ->required()
+                    ->suffix('EGP')
                     ->live(),
                 TextInput::make('discount')
                     ->label('Discount')
                     ->numeric()
                     ->default(0)
                     ->live(),
+                TextInput::make('price_after')
+                    ->label('Price After Discount')
+                    ->numeric()
+                    ->disabled()
+                    ->default(function ($get) {
+                    $price = $get('price');
+                    $discount = $get('discount');
+                    return $price - ($price * ($discount / 100));
+                })
+                ->suffix('EGP'),
+
                 Select::make('status')
                     ->label('Status')
                     ->required()
@@ -75,7 +87,7 @@ class CoursesResource extends Resource
                         'paid' => 'Paid',
                         'free' => 'Free',
                     ]),
-                    Select::make('delivary_method')
+                Select::make('delivary_method')
                         ->label('Delivary Method')
                         ->required()
                         ->options
@@ -83,27 +95,27 @@ class CoursesResource extends Resource
                             'live' => 'Live',
                             'recorded' => 'Recorded',
                         ]),
-                    Select::make('category_id')
+                Select::make('category_id')
                         ->label('Category')
                         ->required()
                         ->relationship('category', 'name')
                         ->getOptionLabelFromRecordUsing(fn ($record) => $record->name['en'] ?? ''),
-                    Select::make('subcategory_id')
+                Select::make('subcategory_id')
                         ->label('Sub Category')
                         ->required()
                         ->relationship('subcategory', 'name')
                         ->getOptionLabelFromRecordUsing(fn ($record) => $record->name['en'] ?? ''),
-                    Select::make('instructors_id')
+                Select::make('instructors_id')
                         ->label('Instructor')
                         ->required()
                         ->relationship('instructor', 'name')
                         ->getOptionLabelFromRecordUsing(fn ($record) => $record->name['en'] ?? ''),
-                    FileUpload::make('image')
+                FileUpload::make('image')
                         ->required()
                         ->label("Image")
                         ->disk('public')
                         ->directory('CoursesImage'),
-                    Repeater::make('goals')
+                Repeater::make('goals')
                         ->label('Course Goals')
                         ->schema([
                         TextInput::make('en')
@@ -116,7 +128,7 @@ class CoursesResource extends Resource
                         ->columns(2)
                         ->minItems(1)
                         ->addActionLabel('Add New Goal'),
-                    Repeater::make('users')
+                Repeater::make('users')
                         ->label('Users')
                         ->schema([
                         TextInput::make('en')

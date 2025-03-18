@@ -174,17 +174,4 @@ class AuthServices
         return false;
   }
 
-  static public function ChangePassword(array $array)
-  {
-     // dd($array);
-      $user = Auth::user();
-        if (!Hash::check($array['password'], $user->password)) {
-          return false;
-        }
-        $user->password =$array['new_password'];
-        $user->save();
-
-        return true;
-  }
-
 }
