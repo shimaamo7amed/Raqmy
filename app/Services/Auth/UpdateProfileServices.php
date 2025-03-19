@@ -1,6 +1,4 @@
 <?php
-
-
 namespace  App\services\Auth;
 
 use Illuminate\Support\Str;
@@ -10,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
+
 
 class UpdateProfileServices
 {
@@ -25,94 +25,56 @@ class UpdateProfileServices
 
         return true;
   }
-  static public function ChangeName(array $array)
+
+
+  static public function UpdateProfile(UsersUsersM $user, array $data)
   {
-    $user=Auth::user();
-    // dd($user);
-    if ($user)
-    {
-      $user->update(["name"=>$array['name']]);
-      // dd($user->name);
-      return $user;
-    }else {
-      return "User Not Found";
+    $emailChanged = false;
+    if (isset($data['email']) && $data['email'] !== $user->email) {
+        $otp = rand(100000, 999999);
+        Cache::put('otp_' . $data['email'], $otp, now()->addMinutes(10));
+
+        Mail::to($data['email'])->send(new EmailOTP($otp, $user->name, $data['email']));
+
+        unset($data['email']);
+        $emailChanged = true;
     }
- 
+
+    if (isset($data['image']) && $data['image']->isValid()) {
+        $path = $data['image']->store('profile_images', 'public');
+        $data['image'] = $path;
+    }
+
+    $user->update($data);
+
+    if ($emailChanged) {
+        return response()->json([
+          'message' => ' Please verify your email OTP.'
+        ]);
+    }
+
+    return response()->json([
+        'message' => 'Profile updated successfully.',
+        'updated_data' => $user->fresh()
+    ]);
   }
 
-  static public function ChangeUserName(array $array)
+
+  static public function verifyOtpAndUpdateEmail(UsersUsersM $user, string $otp, string $email)
   {
-    $user=Auth::user();
-    // dd($user);
-    if ($user)
-    {
-      $user->update(["user_name"=>$array['user_name']]);
-      // dd($user->user_name);
-      return $user;
-    }else {
-      return "User Not Found";
+    $cachedOtp = Cache::get('otp_' . $email);
+    if ($cachedOtp && $cachedOtp == $otp) {
+        $user->update(['email' => $email]);
+        Cache::forget('otp_' . $email);
+        return response()->json([
+            'message' => 'Email verified and updated successfully.',
+            'updated_data' => $user->fresh()
+        ]);
     }
- 
+
+    return response()->json(['message' => 'Invalid OTP.'], 400);
   }
   
-  static public function ChangePhone(array $array)
-  {
-    $user=Auth::user();
-    // dd($user);
-    if ($user)
-    {
-      $user->update(["phone"=>$array['phone']]);
-      // dd($user->phone);
-      return $user;
-    }else {
-      return "User Not Found";
-    }
- 
-  }
 
-  static public function ChangeLocation(array $array)
-  {
-    $user=Auth::user();
-    // dd($user);
-    if ($user)
-    {
-      $user->update([
-        "location"=>$array['location'],
-        "country"=>$array['country']
-      ]);
-      // dd($user->location);
-     return $user;
-    }else {
-      return "User Not Found";
-    }
- 
-  }
-  static public function EmailOTP($newEmail)
-  {
-    $user=Auth::user();
-    if ($user) {
-    $otp = rand(100000, 999999);
-    Cache::put('otp_' . $newEmail, $otp, now()->addMinutes(10));
-    Mail::to($newEmail)->send(new EmailOTP($otp,$user->name, $newEmail));
-    return ['message' => 'OTP sent successfully.'];
-    }
-    else {
-      return ['message' => 'Try Again.'];
-    }
-  
-  }
-
-  static public function ChangeEmail($user, $newEmail, $otp)
-  {
-        $cachedOtp = Cache::get('otp_' . $newEmail);
-
-        if (!$cachedOtp || $cachedOtp != $otp) {
-          return ['error' => 'Invalid OTP'];
-        }
-        $user->update(['email' => $newEmail]);
-        Cache::forget('otp_' . $newEmail);
-
-        return ['message' => 'Email updated successfully.'];
-  }
 
 }

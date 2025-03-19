@@ -14,6 +14,7 @@ Route::name("api.auth.")
     Route::post('verifyEmail', 'VerifyEmail')->name("VerifyEmail");
     Route::post('resendOtp', 'ResendOtp')->name("ResendOtp");
     Route::post('login', 'Login')->name("Login");
+    Route::post('refresh', 'refresh')->name("refresh");
     Route::post('forgetPassword', 'ForgetPassword')->name("ForgetPassword");
     Route::post('validateOtp', 'ValidateOtp')->name("ValidateOtp");
     Route::post('resetPassword', 'ResetPassword')->name("ResetPassword");
@@ -41,11 +42,12 @@ Route::name("api.auth.")
     ->controller(updateProfile::class)
     ->group(function () {
     Route::post('changePassword', 'ChangePassword')->name("ChangePassword");
-    Route::post('changeName', 'ChangeName')->name("ChangeName");
-    Route::post('changeUserName', 'ChangeUserName')->name("ChangeUserName");
-    Route::post('emailOTP', 'EmailOTP')->name("EmailOTP");
-    Route::post('changeEmail', 'ChangeEmail')->name("ChangeEmail");
-    Route::post('changePhone', 'ChangePhone')->name("ChangePhone");
-    Route::post('changeLocation', 'ChangeLocation')->name("ChangeLocation");
+    Route::post('updateProfile', 'UpdateProfile')->name("UpdateProfile");
+    Route::post('verifyOtp', 'verifyOtp')->name("verifyOtp");
+    // Route::post('changeUserName', 'ChangeUserName')->name("ChangeUserName");
+    // Route::post('emailOTP', 'EmailOTP')->name("EmailOTP");
+    // Route::post('changeEmail', 'ChangeEmail')->name("ChangeEmail");
+    // Route::post('changePhone', 'ChangePhone')->name("ChangePhone");
+    // Route::post('changeLocation', 'ChangeLocation')->name("ChangeLocation");
     });
 });

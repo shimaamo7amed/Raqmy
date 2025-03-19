@@ -151,9 +151,14 @@ class CoursesResource extends Resource
                 TextColumn::make('id'),
                 TextColumn::make('name.en')
                 ->label('Name'),
-                ImageColumn::make("image"),
                 TextColumn::make('price')
                 ->label('Price'),
+                TextColumn::make('category.name.en')
+                ->label('Category')
+                ,
+            TextColumn::make('subcategory.name.en')
+                ->label('Sub Category')
+                ,
             ])
             ->filters([
                 //

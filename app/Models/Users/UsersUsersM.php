@@ -39,6 +39,7 @@ class UsersUsersM extends Authenticatable implements JWTSubject
         'otp',
         'password',
     ];
+protected $appends = ['location', 'country'];
 
     protected function casts(): array
     {

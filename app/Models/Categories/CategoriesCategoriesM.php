@@ -14,6 +14,7 @@ class CategoriesCategoriesM extends Model
     protected $fillable = [
         'code',
         'name',
+        'image'
     ];
         protected $casts = [
         'name' => 'array',

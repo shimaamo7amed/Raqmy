@@ -7,6 +7,8 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Categories\CategoriesCategoriesM;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -35,11 +37,16 @@ class CategoriesResource extends Resource
                Forms\Components\Hidden::make('code')
                         ->default(fn () => self::GenerateNewCode()),
                         Forms\Components\TextInput::make('name.en')
-                            ->label('Name (English)')
-                            ->required(),
+                        ->label('Name (English)')
+                        ->required(),
                         Forms\Components\TextInput::make('name.ar')
-                            ->label('Name (Arabic)')
-                            ->required(),
+                        ->label('Name (Arabic)')
+                        ->required(),
+                        FileUpload::make('image')
+                        ->required()
+                        ->label("Image")
+                        ->disk('public')
+                        ->directory('CategoryImage'),
             ]);
     }
 
@@ -50,9 +57,9 @@ class CategoriesResource extends Resource
                  Tables\Columns\TextColumn::make('id'),
                 Tables\Columns\TextColumn::make('code'),
                 Tables\Columns\TextColumn::make('name.en')
-                ->label('Name (English)'),
-                Tables\Columns\TextColumn::make('name.ar')
-                ->label('Name (Arabic)'),
+                ->label('Name'),
+                ImageColumn::make("image"),
+
             ])
             ->filters([
                 //
