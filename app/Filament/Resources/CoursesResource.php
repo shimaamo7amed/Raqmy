@@ -64,22 +64,10 @@ class CoursesResource extends Resource
                     ->required()
                     ->suffix('EGP')
                     ->live(),
-                TextInput::make('discount')
-                    ->label('Discount')
-                    ->numeric()
-                    ->default(0)
-                    ->live(),
-                TextInput::make('price_after')
-                    ->label('Price After Discount')
-                    ->numeric()
-                    ->disabled()
-                    ->default(function ($get) {
-                    $price = $get('price');
-                    $discount = $get('discount');
-                    return $price - ($price * ($discount / 100));
-                })
-                ->suffix('EGP'),
-
+              TextInput::make('discount')
+                ->numeric()
+                ->default(0)
+                ->suffix('%'),
                 Select::make('status')
                     ->label('Status')
                     ->required()
@@ -148,18 +136,30 @@ class CoursesResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id'),
                 TextColumn::make('name.en')
                 ->label('Name'),
+                TextColumn::make('instructor.name.en')
+                ->label('Instructor'),
                 TextColumn::make('price')
                 ->label('Price'),
+                    TextColumn::make('price')
+                ->sortable()
+                ->money('EGP'), 
+            TextColumn::make('discount')
+                ->label('Discount %')
+                ->sortable()
+                ->suffix('%'),
+            TextColumn::make('discounted_price')
+                ->label('Price After Discount')
+                ->money('EGP')
+                ->sortable(),
                 TextColumn::make('category.name.en')
                 ->label('Category')
                 ,
             TextColumn::make('subcategory.name.en')
-                ->label('Sub Category')
-                ,
+                ->label('Sub Category'),
             ])
+
             ->filters([
                 //
             ])

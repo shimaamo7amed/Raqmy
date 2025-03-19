@@ -2,6 +2,7 @@
 
 namespace App\Models\Courses;
 use App\Models\Rates\CourseRatesM;
+use App\Models\Courses\PromoCodesM;
 use App\Models\Courses\CoursesVideosM;
 use App\Models\Courses\CoursesModulesM;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ use App\Models\Instructors\InstructorsInstructorsM;
 
 class CoursesCoursesM extends Model
 {
-       protected $table = "courses_courses";
+    protected $table = "courses_courses";
     public $timestamps = true;
 
     protected $fillable =
@@ -64,8 +65,22 @@ class CoursesCoursesM extends Model
     {
         return $this->HasMany(CourseRatesM::class, 'course_id');
     }
-    public function getPriceAfterAttribute()
+    public function getDiscountedPriceAttribute()
     {
-        return $this->discount ? $this->price - $this->discount : $this->price;
+        return $this->price - ($this->price * $this->discount / 100);
     }
+    public function promoCodes()
+    {
+        return $this->belongsToMany(PromoCodesM::class, 'course_promo_code');
+    }
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($course) {
+        $course->price_after = $course->price - ($course->price * $course->discount / 100);
+    });
+    }
+
 }
+
