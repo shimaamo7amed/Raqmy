@@ -24,6 +24,7 @@ class CoursesCoursesM extends Model
         'discount',
         'price_after',
         'goals',
+        'notes',
         'status',
         'users',
         'image',
@@ -38,6 +39,7 @@ class CoursesCoursesM extends Model
         'name' => 'array',
         'desc' => 'array',
         'goals' => 'array',
+        'notes' => 'array',
         'users' => 'array',
     ];
     public function instructor()

@@ -24,14 +24,12 @@ class UsersUsersM extends Authenticatable implements JWTSubject
         'otp',
         'gender',
         'country',
+        'government',
         'bio',
-        'location',
         'image',
         'social_id',
         'social_type',
         'jwt_token',
-        'country_id',
-        'government_id',
     ];
 
     protected $hidden = [
@@ -39,7 +37,6 @@ class UsersUsersM extends Authenticatable implements JWTSubject
         'otp',
         'password',
     ];
-protected $appends = ['location', 'country'];
 
     protected function casts(): array
     {
@@ -47,28 +44,7 @@ protected $appends = ['location', 'country'];
             'password' => 'hashed',
         ];
     }
-    public function getLocationAttribute($value)
-    {
-        $location = json_decode($value, true);
-        return $location ? $location['government_name'] . ',' . $location['country_name'] : null;
-    }
-    public function getCountryAttribute($value)
-    {
-    $country = json_decode($value, true);
-    return $country ? $country['country_name'] : null;
-    }
-
-
-
-    public function country()
-    {
-        return $this->belongsTo(CountriesCountriesM::class, 'country_id');
-    }
-
-    public function government()
-    {
-        return $this->belongsTo(CountriesGovernmentM::class, 'government_id');
-    }
+   
     public function rates()
     {
         return $this->HasMany(CourseRatesM::class, 'user_id');
@@ -83,4 +59,27 @@ protected $appends = ['location', 'country'];
     {
         return [];
     }
+
+     // public function getLocationAttribute($value)
+    // {
+    //     $location = json_decode($value, true);
+    //     return $location ? $location['government_name'] . ',' . $location['country_name'] : null;
+    // }
+    // public function getCountryAttribute($value)
+    // {
+    // $country = json_decode($value, true);
+    // return $country ? $country['country_name'] : null;
+    // }
+
+
+
+    // public function country()
+    // {
+    //     return $this->belongsTo(CountriesCountriesM::class, 'country_id');
+    // }
+
+    // public function government()
+    // {
+    //     return $this->belongsTo(CountriesGovernmentM::class, 'government_id');
+    // }
 }

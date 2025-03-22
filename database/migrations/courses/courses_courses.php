@@ -21,6 +21,7 @@ return new class extends Migration
             $table->json('desc');
             $table->decimal('price');
             $table->json('goals');
+            $table->json('notes');
             $table->enum('status', ['paid', 'free'])->default('paid');
             $table->json('users');
             $table->string('image')->nullable();

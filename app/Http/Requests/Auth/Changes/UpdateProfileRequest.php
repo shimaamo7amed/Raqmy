@@ -34,7 +34,7 @@ class UpdateProfileRequest extends FormRequest
         "email" => 'required|email|unique:users_users,email,' . $userId,
         "bio"=> "string|min:2|max:255",
         "image"=>"image|mimes:png,jpg,jpeg",
-        "location"=>"required|string",
+        "government"=>"required|string",
         "country"=>"required|string",
         "otp" => "required|numeric",
 

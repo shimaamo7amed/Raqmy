@@ -58,6 +58,12 @@ class CoursesResource extends Resource
                 Textarea::make('desc.ar')
                     ->label('Descrebtion (Arabic)')
                     ->required(),
+                TextInput::make('notes.en')
+                    ->label('Notes (English)')
+                    ->required(),
+                TextInput::make('notes.ar')
+                    ->label('Notes (Arabic)')
+                    ->required(),
                 TextInput::make('price')
                     ->label('Price')
                     ->numeric()

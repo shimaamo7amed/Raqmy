@@ -4,8 +4,8 @@ namespace App\Http\Requests\Auth;
 
 use App\Services\Users\UsersUsersServices;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\Countries\CountriesCountriesM;
-use App\Models\Countries\CountriesGovernmentM;
+// use App\Models\Countries\CountriesCountriesM;
+// use App\Models\Countries\CountriesGovernmentM;
 
 class RegisterRequest extends FormRequest
 {
@@ -21,20 +21,20 @@ class RegisterRequest extends FormRequest
             'otp' => rand(123652, 986412),
         ]);
 
-        $countryName = CountriesCountriesM::find($this->country_id)?->label_en;
-        $governmentName = CountriesGovernmentM::find($this->government_id)?->label_en;
-            $location = json_encode([
-                'government_name' => $governmentName,
-                'country_name' => $countryName,
-            ]);
-            $country = json_encode([
-                'country_name' => $countryName,
-                'country_id' => $this->country_id,
-            ]);
-            $this->merge([
-                'location' => $location,
-                'country' => $country,
-            ]);
+        // $countryName = CountriesCountriesM::find($this->country_id)?->label_en;
+        // $governmentName = CountriesGovernmentM::find($this->government_id)?->label_en;
+        //     $location = json_encode([
+        //         'government_name' => $governmentName,
+        //         'country_name' => $countryName,
+        //     ]);
+        //     $country = json_encode([
+        //         'country_name' => $countryName,
+        //         'country_id' => $this->country_id,
+        //     ]);
+        //     $this->merge([
+        //         'location' => $location,
+        //         'country' => $country,
+        //     ]);
     }
 
 
@@ -56,21 +56,19 @@ class RegisterRequest extends FormRequest
                 'confirmed'
             ],
             "phone" => "required|min_digits:11|max_digits:15",
-            'country_id' => 'required|exists:countries_countries,id',
             "gender" => "required|in:male,female",
-            'government_id' => 'required|exists:countries_governments,id|in:' . $this->getGovernmentIdsBasedOnCountry(),
             "otp" => "required|numeric",
-            "location" => "string",
-            "country" => "string",
+            "country" => "required|string",
+            "government" => "required|string",
         ];
     }
 
-    private function getGovernmentIdsBasedOnCountry()
-    {
-        $governmentNames = CountriesGovernmentM::where('country_id', $this->country_id)
-            ->pluck('id')
-            ->implode(',');
-        return $governmentNames;
-    }
+    // private function getGovernmentIdsBasedOnCountry()
+    // {
+    //     $governmentNames = CountriesGovernmentM::where('country_id', $this->country_id)
+    //         ->pluck('id')
+    //         ->implode(',');
+    //     return $governmentNames;
+    // }
 }
 
