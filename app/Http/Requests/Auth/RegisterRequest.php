@@ -42,8 +42,8 @@ class RegisterRequest extends FormRequest
     {
         return [
             "code" => "required|unique:users_users,code",
-            "name" => "required|string|min:3|max:50",
-            "user_name" => "required|string|unique:users_users,user_name",
+            "name" => "required|string|min:3|max:25",
+            "userName" => "required|string|unique:users_users,userName",
             "email" => "required|email|unique:users_users,email",
             'password' => [
                 'required',
@@ -56,7 +56,7 @@ class RegisterRequest extends FormRequest
                 'confirmed'
             ],
             "phone" => "required|min_digits:11|max_digits:15",
-            "gender" => "required|in:male,female",
+            "gender" => "required|string",
             "otp" => "required|numeric",
             "country" => "required|string",
             "government" => "required|string",

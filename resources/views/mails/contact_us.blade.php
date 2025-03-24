@@ -51,17 +51,15 @@
 
 <body>
     <table>
-        <!-- العنوان -->
         <tr>
             <th colspan="2" style="text-align:center; font-size: 20px; background-color: #2c3e50; color: #fff;">
                 📩 New Contact Request
             </th>
         </tr>
 
-        <!-- البيانات -->
         <tr>
-            <td><strong>Name:</strong></td>
-            <td>{{ $emailData['name'] ?? 'N/A' }}</td>
+            <td><strong>Full Name:</strong></td>
+            <td>{{ $emailData['fullName'] ?? 'N/A' }}</td>
         </tr>
         <tr>
             <td><strong>Phone:</strong></td>

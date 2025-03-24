@@ -9,7 +9,7 @@ class FormsContactUSM  extends Model
     protected $table = "forms_contact_us";
 
     protected $fillable = [
-    'name',
+    'fullName',
     'email',
     'phone',
     'message',

@@ -78,7 +78,7 @@ class AuthServices
   {
     // dd($array);
     $user = UsersUsersM::where('email', $array['email'])
-    ->orWhere('user_name', $array['email'])
+    ->orWhere('userName', $array['email'])
     ->first();
     //  dd($user);
     if (!$user || !\Hash::check($array['password'], $user->password))
@@ -88,7 +88,7 @@ class AuthServices
     if ($user->jwt_token) {
       return 'device_error';
     }
-   $field = filter_var($array['email'], FILTER_VALIDATE_EMAIL) ? 'email' : 'user_name';
+   $field = filter_var($array['email'], FILTER_VALIDATE_EMAIL) ? 'email' : 'userName';
     $token = auth('api')->attempt([
         $field => $array['email'],
         'password' => $array['password'],

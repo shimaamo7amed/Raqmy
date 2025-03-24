@@ -16,7 +16,7 @@ return new class extends Migration
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
             $table->id();
-               $table->string('name');
+               $table->string('fullName');
             $table->string('email');
             $table->string('phone');
             $table->longText('message');

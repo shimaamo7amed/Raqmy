@@ -14,7 +14,7 @@ class instructoriesServices
 
     public static function GetByCode($code)
     {
-    $instructor = InstructorsInstructorsM::where('code', $code)->first();
+    $instructor = InstructorsInstructorsM::with('courses')->where('code', $code)->first();
     // dd($instructor);
     if ($instructor) {
         return $instructor;

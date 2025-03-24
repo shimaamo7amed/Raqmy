@@ -14,7 +14,7 @@ class ContactUsRequest extends FormRequest
     public function rules(): array
     {
         return [
-        "name"=>"required|string|min:3|max:50",
+        "fullName"=>"required|string|min:3|max:25",
         "email"=>"required|email",
         "phone"=>"required|string|min_digits:11|max_digits:15",
         "message"=>"required"

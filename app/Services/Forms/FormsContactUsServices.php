@@ -16,7 +16,7 @@ class FormsContactUsServices
         $data = FormsContactUSM::create($array);
     // dd($data);
     $emailData = [
-        'name'    => $data->name,
+        'fullName'    => $data->fullName,
         'phone'   => $data->phone,
         'email'   => $data->email,
         'message' => $data->message,
@@ -28,7 +28,7 @@ class FormsContactUsServices
 
     Notification::make()
         ->title('New Contact Form Submission')
-        ->body("A new message from {$data->name}.")
+        ->body("A new message from {$data->fullName}.")
         ->send();
         
 
