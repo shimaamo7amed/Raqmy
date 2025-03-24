@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Courses\courses;
 use App\Http\Controllers\Forms\ContactUS;
+use App\Http\Controllers\Programs\Programs;
 use App\Http\Controllers\Courses\courseRates;
 use App\Http\Controllers\Categories\categories;
 use App\Http\Controllers\Forms\InstructorsForm;
@@ -27,6 +28,14 @@ Route::name("api.app.")
         Route::get('All', 'GetAll')->name("GetAll");
         Route::get('{code}', 'GetByCode')->name("GetByCode");
         Route::post('search','search')->name("search");
+        });
+// Programs routes
+        Route::name("Programs.")
+        ->prefix("Programs/")
+        ->controller(Programs::class)
+        ->group(function () {
+        Route::get('All', 'GetAll')->name("GetAll");
+        Route::get('{code}', 'GetByCode')->name("GetByCode");
         });
         // Categories routes
         Route::name("Categories.")
