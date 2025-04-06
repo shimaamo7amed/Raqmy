@@ -61,8 +61,8 @@ class CousreModulesResource extends Resource
                 TextColumn::make('id'),
                 TextColumn::make('title.en')
                 ->label('Title  (English)'),
-                TextColumn::make('title.ar')
-                ->label('Title (Arabic)')
+                TextColumn::make('course.name.en')
+                ->label('Course'),
             ])
             ->filters([
                 //

@@ -103,7 +103,7 @@ class CoursesResource extends Resource
                         if (!$categoryId) {
                             return [];
                         }
-                        $category =CategoriesCategoriesM::with('subCategories')->find($categoryId);
+                        $category = CategoriesCategoriesM::with('subCategories')->find($categoryId);
 
                         return $category?->subCategories
                             ->pluck('name.en', 'id')
@@ -183,8 +183,7 @@ class CoursesResource extends Resource
                 ->money('EGP')
                 ->sortable(),
                 TextColumn::make('category.name.en')
-                ->label('Category')
-                ,
+                ->label('Category'),
             TextColumn::make('subcategory.name.en')
                 ->label('Sub Category'),
             ])

@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use App\Models\Courses\CoursesVideosM;
+use App\Models\Courses\CoursesModuleItemsM;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\FileUpload;
@@ -46,16 +47,28 @@ class CousreVideosResource extends Resource
                 ->disk('public')  // Specify disk (you can use 'public' or others)
                 ->directory('videos')  // Specify the directory inside storage
                 ->acceptedFileTypes(['video/mp4', 'video/avi', 'video/mkv']) // Limit file types to videos
-                ->maxSize(10240)  // Set max size in KB (10MB in this case)
+                ->maxSize(10240) // Set max size in KB (10MB in this case)
+                // ->multiple()
                 ->columnSpan(1),  // Optional, to adjust the layout
-                TextInput::make("time")
-                ->label("Video Time"),
-                Select::make('course_id')
+           Select::make('course_id')
                 ->label('Course')
                 ->required()
                 ->relationship('course', 'name')
-                ->getOptionLabelFromRecordUsing(fn ($record) => $record->name['en'] ?? ''),
-            ]);
+                ->getOptionLabelFromRecordUsing(fn ($record) => $record->name['en'] ?? '')
+                ->reactive(),
+            Select::make('module_item_id')
+                ->label('Module Item')
+                ->required()
+                ->options(function (callable $get) {
+                    $courseId = $get('course_id');
+                    if (!$courseId) {
+                        return [];
+                    }
+                    return CoursesModuleItemsM::whereHas('module', function ($query) use ($courseId) {
+                        $query->where('course_id', $courseId);
+                    })->get()->pluck('content.en', 'id');
+                }),
+        ]);
     }
 
     public static function table(Table $table): Table
@@ -63,7 +76,7 @@ class CousreVideosResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id'),
-                TextColumn::make('time')
+                TextColumn::make('moduleItem.content.en')
                 ->label('Time'),
                 TextColumn::make('video')
                 ->label('Video')

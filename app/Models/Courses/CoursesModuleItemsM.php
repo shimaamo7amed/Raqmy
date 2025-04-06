@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models\Courses;
+use App\Models\Courses\CoursesVideosM;
 use App\Models\Courses\CoursesCoursesM;
 use App\Models\Courses\CoursesModulesM;
 use Illuminate\Database\Eloquent\Model;
@@ -24,6 +25,10 @@ class CoursesModuleItemsM extends Model
     public function module()
     {
         return $this->belongsTo(CoursesModulesM::class, 'module_id');
+    }
+    public function videos()
+    {
+    return $this->hasOne(CoursesVideosM::class, 'module_item_id');
     }
 
 }

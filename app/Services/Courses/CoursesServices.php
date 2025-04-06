@@ -48,7 +48,7 @@ class CoursesServices
                 "instructor",
                 "modules",
                 "modules.moduleItem",
-                "courseVideo",
+                "courseVideo.moduleItem",
                 "rates"
             ])->where("code", $code)->first();
 

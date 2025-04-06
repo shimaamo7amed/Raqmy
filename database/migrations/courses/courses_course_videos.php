@@ -18,7 +18,9 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique();
             $table->string('video');
-            $table->string('time')->nullable();
+            // $table->json('title')->nullable();
+            // $table->json('desc')->nullable();
+            $table->foreignId('module_item_id')->references('id')->on('courses_module_items')->constrained()->cascadeOnDelete();
             $table->foreignId('course_id')->references('id')->on('courses_courses')->constrained()->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();

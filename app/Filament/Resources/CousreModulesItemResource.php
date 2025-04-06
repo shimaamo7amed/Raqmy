@@ -48,20 +48,21 @@ class CousreModulesItemResource extends Resource
                 Textarea::make('content.ar')
                 ->label('Content (Arabic)')
                 ->required(),
-                Select::make('module_id')
+            Select::make('module_id')
                 ->label('Module')
                 ->required()
                 ->options(function () {
                     return CoursesCoursesM::with('modules')->get()->mapWithKeys(function ($course) {
-                    $courseName = is_array($course->name) ? ($course->name['en'] ?? 'Unnamed Course') : $course->name;
-                    return [
-                    $courseTitle => $course->modules->mapWithKeys(function ($module) {
-                    $moduleTitle = is_array($module->title) ? ($module->title['en'] ?? 'Unnamed Module') : $module->title;
-                    return [$module->id => $moduleTitle];
-                    })->toArray()
-                    ];
+                        $courseTitle = is_array($course->name) ? ($course->name['en'] ?? 'Unnamed Course') : $course->name;
+                        return [
+                            $courseTitle => $course->modules->mapWithKeys(function ($module) {
+                                $moduleTitle = is_array($module->title) ? ($module->title['en'] ?? 'Unnamed Module') : $module->title;
+                                return [$module->id => $moduleTitle];
+                            })->toArray()
+                        ];
                     })->toArray();
-                }),
+    }),
+
             ]);
     }
 
@@ -72,8 +73,8 @@ class CousreModulesItemResource extends Resource
                 TextColumn::make('id'),
                 TextColumn::make('content.en')
                 ->label('content  (English)'),
-                TextColumn::make('content.ar')
-                ->label('content (Arabic)')
+                TextColumn::make('module.title.en')
+                ->label('Module')
             ])
             ->filters([
                 //
