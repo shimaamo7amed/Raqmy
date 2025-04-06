@@ -36,6 +36,8 @@ Route::name("api.app.")
         ->group(function () {
         Route::get('All', 'GetAll')->name("GetAll");
         Route::get('{code}', 'GetByCode')->name("GetByCode");
+         Route::get('subcategor', 'subcategory')->name("subcategory");
+
         });
         // Categories routes
         Route::name("Categories.")

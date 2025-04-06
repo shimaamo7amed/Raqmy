@@ -54,7 +54,7 @@ class CoursesCoursesM extends Model
     }
     public function subcategory()
     {
-        return $this->belongsTo(CategoriesSubCategoriesM::class, 'subcategory_id');
+        return $this->belongsTo(CategoriesSubCategoriesM::class, 'subcategory_id','id');
     }
     public function modules()
     {
