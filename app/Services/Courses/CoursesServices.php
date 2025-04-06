@@ -27,10 +27,10 @@ class CoursesServices
         ->with([
             'category:id,name',
             'instructor:id,name',
-            'courseVideo:id,course_id,time',
+            // 'courseVideo:id,course_id,time',
             'rates:id,course_id,user_id,rates',
         ])
-        ->select('id', 'code', 'name', 'desc', 'price','price_after', 'delivary_method', 'image', 'instructors_id', 'category_id')
+        ->select('id', 'code', 'name', 'desc', 'price','price_after', 'delivary_method', 'image','main_video', 'instructors_id', 'category_id')
         ->paginate($limit);
         if ($courses->isEmpty()) {
             return SystemApiResponseServices::ReturnSuccess(

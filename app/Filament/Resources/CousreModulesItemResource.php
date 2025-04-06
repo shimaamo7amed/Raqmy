@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
+use App\Models\Courses\CoursesCoursesM;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
@@ -50,8 +51,17 @@ class CousreModulesItemResource extends Resource
                 Select::make('module_id')
                 ->label('Module')
                 ->required()
-                ->relationship('module', 'title')
-                ->getOptionLabelFromRecordUsing(fn ($record) => $record->title['en'] ?? ''),
+                ->options(function () {
+                    return CoursesCoursesM::with('modules')->get()->mapWithKeys(function ($course) {
+                    $courseName = is_array($course->name) ? ($course->name['en'] ?? 'Unnamed Course') : $course->name;
+                    return [
+                    $courseTitle => $course->modules->mapWithKeys(function ($module) {
+                    $moduleTitle = is_array($module->title) ? ($module->title['en'] ?? 'Unnamed Module') : $module->title;
+                    return [$module->id => $moduleTitle];
+                    })->toArray()
+                    ];
+                    })->toArray();
+                }),
             ]);
     }
 

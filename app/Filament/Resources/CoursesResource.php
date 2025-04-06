@@ -30,11 +30,11 @@ class CoursesResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
     protected static ?string $navigationGroup = "Courses";
     protected static ?string $modelLabel = "Courses";
-    static public function GenerateNewCode()
+    public static function GenerateNewCode()
     {
         $code = Str::random(5);
         if (CoursesCoursesM::where('code', $code)->exists()) {
-            return Self::GenerateNewCode();
+            return self::GenerateNewCode();
         } else {
             return $code;
         }
@@ -84,21 +84,35 @@ class CoursesResource extends Resource
                 Select::make('delivary_method')
                         ->label('Delivary Method')
                         ->required()
-                        ->options
-                        ([
+                        ->options([
                             'live' => 'Live',
                             'recorded' => 'Recorded',
                         ]),
-                Select::make('category_id')
-                        ->label('Category')
-                        ->required()
-                        ->relationship('category', 'name')
-                        ->getOptionLabelFromRecordUsing(fn ($record) => $record->name['en'] ?? ''),
-                Select::make('subcategory_id')
-                        ->label('Sub Category')
-                        ->required()
-                        ->relationship('subcategory', 'name')
-                        ->getOptionLabelFromRecordUsing(fn ($record) => $record->name['en'] ?? ''),
+                    Select::make('category_id')
+                    ->label('Category')
+                    ->required()
+                    ->relationship('category', 'name')
+                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->name['en'] ?? '')
+                    ->reactive(),
+                    Select::make('subcategory_id')
+                    ->label('Sub Category')
+                    ->required()
+                    ->options(function (callable $get) {
+                        $categoryId = $get('category_id');
+
+                        if (!$categoryId) {
+                            return [];
+                        }
+                        $category =CategoriesCategoriesM::with('subCategories')->find($categoryId);
+
+                        return $category?->subCategories
+                            ->pluck('name.en', 'id')
+                            ->toArray();
+                    })
+                    ->reactive()
+                    ->disabled(fn (callable $get) => !$get('category_id')),
+
+
                 Select::make('instructors_id')
                         ->label('Instructor')
                         ->required()
@@ -109,6 +123,15 @@ class CoursesResource extends Resource
                         ->label("Image")
                         ->disk('public')
                         ->directory('CoursesImage'),
+                FileUpload::make('main_video')
+                ->label('Upload Video')
+                ->disk('public')  // Specify disk (you can use 'public' or others)
+                ->directory('videos')  // Specify the directory inside storage
+                ->acceptedFileTypes(['video/mp4', 'video/avi', 'video/mkv']) // Limit file types to videos
+                ->maxSize(10240)  // Set max size in KB (10MB in this case)
+                ->columnSpan(1),  // Optional, to adjust the layout
+                TextInput::make("video_time")
+                ->label("Video Time"),
                 Repeater::make('goals')
                         ->label('Course Goals')
                         ->schema([
@@ -150,7 +173,7 @@ class CoursesResource extends Resource
                 ->label('Price'),
                     TextColumn::make('price')
                 ->sortable()
-                ->money('EGP'), 
+                ->money('EGP'),
             TextColumn::make('discount')
                 ->label('Discount %')
                 ->sortable()

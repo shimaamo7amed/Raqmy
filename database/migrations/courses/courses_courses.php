@@ -25,6 +25,8 @@ return new class extends Migration
             $table->enum('status', ['paid', 'free'])->default('paid');
             $table->json('users');
             $table->string('image')->nullable();
+            $table->string('main_video')->nullable();
+            $table->string('video_time')->nullable();
             $table->enum('delivary_method', ['live', 'recorded'])->default('recorded');
             $table->decimal('discount', 5, 2)->default(0);
             $table->decimal('price_after', 10, 2)->nullable();

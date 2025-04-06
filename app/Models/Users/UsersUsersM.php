@@ -17,7 +17,7 @@ class UsersUsersM extends Authenticatable implements JWTSubject
     [
         'code',
         'name',
-        'user_name',
+        'userName',
         'email',
         'password',
         'phone',

@@ -28,6 +28,8 @@ class CoursesCoursesM extends Model
         'status',
         'users',
         'image',
+        'main_video',
+        'video_time',
         'delivary_method',
         'instructors_id',
         'category_id',
