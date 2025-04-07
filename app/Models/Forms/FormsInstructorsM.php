@@ -9,11 +9,14 @@ class FormsInstructorsM  extends Model
     protected $table = "forms_instructors";
 
     protected $fillable = [
-    'name',
+    'name_en',
+    'name_ar',
     'email',
     'phone',
     'message',
-    'linkedIn'
+    'linkedIn',
+    'experince',
+    'cv'
     ];
     protected $hidden = [
         'id',

@@ -26,9 +26,9 @@ class CoursesServices
         ->allowedSorts(["id"])
         ->with([
             'category:id,name',
-            // 'subcategory:id,name',
+            'subcategory:id,name',
             'instructor:id,name',
-            'courseVideo:id,course_id,time',
+            'courseVideo.moduleItem',
             'rates:id,course_id,user_id,rates',
         ])
         ->select('id', 'code', 'name', 'desc', 'price','price_after', 'delivary_method', 'image','main_video', 'video_time', 'instructors_id', 'category_id','subcategory_id')

@@ -18,7 +18,7 @@ class InstructorsForm extends Controller
                 if ($formData) {
                         return  SystemApiResponseServices::ReturnSuccess(
                             [],
-                            __("Thanks,will contact you soon.."),
+                            __("Thanks,The Admin will contact you soon.."),
                             null
                         );
                     } else {

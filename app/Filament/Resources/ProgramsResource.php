@@ -127,6 +127,8 @@ class ProgramsResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('id')
+                ->label('ID'),
                 TextColumn::make('title.en')
                 ->label('Name (English)'),
                 TextColumn::make('total_price')

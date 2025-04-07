@@ -14,11 +14,15 @@ class InstructorsRequest extends FormRequest
     public function rules(): array
     {
         return [
-        "name"=>"required|string|min:3|max:50",
+        "name_en"=>"required|string|min:3|max:50",
+        "name_ar"=>"required|string|min:3|max:50",
         "email"=>"required|email",
         "phone"=>"required|string|min_digits:11|max_digits:15",
+        'experince' => 'required|numeric|regex:/^\d+(\.\d{1,8})?$/', 
         "linkedIn"=>"required|string",
         "message"=>"required",
+        'cv' => 'required|file|mimes:pdf,doc,docx|max:2048',
+
         ];
     }
 }

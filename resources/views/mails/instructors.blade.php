@@ -26,7 +26,7 @@
             text-align: left;
         }
         th {
-            background-color: #2c3e50;
+            background-color: #fb9117;
             color: #ffffff;
             font-size: 16px;
         }
@@ -52,13 +52,17 @@
 <body>
     <table>
         <tr>
-            <th colspan="2" style="text-align:center; font-size: 20px; background-color: #2c3e50; color: #fff;">
-                📩 New Instructors Request
+            <th colspan="2" style="text-align:center; font-size: 20px; background-color: #fb9117; color: #fff;">
+                New Instructors Request 📩
             </th>
         </tr>
         <tr>
-            <td><strong>Name:</strong></td>
-            <td>{{ $emailData['name'] ?? 'N/A' }}</td>
+            <td><strong>English Name:</strong></td>
+            <td>{{ $emailData['name_en'] ?? 'N/A' }}</td>
+        </tr>
+        <tr>
+            <td><strong>Arabic Name:</strong></td>
+            <td>{{ $emailData['name_ar'] ?? 'N/A' }}</td>
         </tr>
         <tr>
             <td><strong>Phone:</strong></td>
@@ -76,6 +80,19 @@
             <td><strong>Message:</strong></td>
             <td>{!! nl2br(e($emailData['message'] ?? 'No message provided.')) !!}</td>
         </tr>
+        <tr>
+         <tr>
+            <td><strong>Experince:</strong></td>
+            <td>{{ $emailData['experince'] ?? 'N/A' }}</td>
+        </tr>
+        <td><strong>CV:</strong></td>
+        <td>
+        <a href="{{ $emailData['cv'] ?? '#' }}" target="_blank" style="color: #2980b9; text-decoration: underline;">
+            Download CV
+        </a>
+        </td>
+        </tr>
+
 
     </table>
 </body>

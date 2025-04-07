@@ -7,7 +7,10 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Categories\CategoriesCategoriesM;
 use App\Models\Categories\CategoriesSubCategoriesM;
@@ -38,12 +41,12 @@ class SubCategoriesResource extends Resource
     {
         return $form
             ->schema([
-                      Forms\Components\Hidden::make('code')
+                        Hidden::make('code')
                         ->default(fn () => self::GenerateNewCode()),
-                        Forms\Components\TextInput::make('name.en')
+                        TextInput::make('name.en')
                             ->label('Name (English)')
                             ->required(),
-                        Forms\Components\TextInput::make('name.ar')
+                        TextInput::make('name.ar')
                             ->label('Name (Arabic)')
                             ->required(),
                         Select::make('category_id')
@@ -59,12 +62,12 @@ class SubCategoriesResource extends Resource
     {
         return $table
             ->columns([
-                    Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\TextColumn::make('code'),
-                Tables\Columns\TextColumn::make('name.en')
-                ->label('Name (English)'),
-                Tables\Columns\TextColumn::make('name.ar')
-                ->label('Name (Arabic)'),
+                TextColumn::make('id'),
+                TextColumn::make('code'),
+                TextColumn::make('name.en')
+                ->label('SubCategory Name'),
+                TextColumn::make('category.name.en')
+                ->label('Category Name'),
             ])
             ->filters([
                 //

@@ -9,7 +9,9 @@ use Filament\Tables\Table;
 use App\Models\InstructorsForm;
 use Filament\Resources\Resource;
 use App\Models\Forms\FormsInstructorsM;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\InstructorsFormResource\Pages;
@@ -27,16 +29,26 @@ class InstructorsFormResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                ->label('Name'),
+                TextInput::make('name_en')
+                ->label('English Name'),
+                TextInput::make('name_ar')
+                ->label('Arabic Name'),
                 TextInput::make('email')
                 ->label('Email'),
                 TextInput::make('phone')
                 ->label('Phone'),
+                TextInput::make('experince')
+                ->label('Experince'),
                 TextInput::make('linkedIn')
                 ->label('LinkedIn'),
                 TextInput::make('message')
                 ->label('Message'),
+                FileUpload::make('cv')
+                ->label("CV")
+                ->visibility('public')
+                ->downloadable()
+                ->openable()
+                ->preserveFilenames()
             ]);
     }
 
@@ -44,16 +56,16 @@ class InstructorsFormResource extends Resource
     {
         return $table
             ->columns([
-                 Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\TextColumn::make('name')
-                ->label('Name'),
-                Tables\Columns\TextColumn::make('email')
+                TextColumn::make('id'),
+                TextColumn::make('name_en')
+                ->label(' Name'),
+                TextColumn::make('email')
                 ->label('Email'),
-                Tables\Columns\TextColumn::make('phone')
+                TextColumn::make('phone')
                 ->label('Phone'),
-                Tables\Columns\TextColumn::make('linkedIn')
-                ->label('LinkedIn'),
-                Tables\Columns\TextColumn::make('message')
+                TextColumn::make('experince')
+                ->label('Experince'),
+                TextColumn::make('message')
                 ->label('Message'),
             ])
             ->filters([
