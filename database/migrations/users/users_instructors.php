@@ -17,11 +17,14 @@ return new class extends Migration
             $table->collation = 'utf8_general_ci';
             $table->id();
             $table->string('code')->unique();
-            $table->json('name');
-            $table->json('desc');
-            $table->string('image');
-            $table->string('facebook')->nullable();
+            $table->string('name_en');
+            $table->string('name_ar');
+            $table->string('email');
+            $table->string('phone');
+            $table->decimal('experince');
             $table->string('linkedIn')->nullable();
+            $table->string('cv')->nullable();
+            $table->string('password');
             $table->timestamps();
             $table->softDeletes();
         });

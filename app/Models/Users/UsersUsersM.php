@@ -5,6 +5,7 @@ namespace App\Models\Users;
 use App\Models\Rates\CourseRatesM;
 use App\Models\Countries\CountriesCountriesM;
 use App\Models\Countries\CountriesGovernmentM;
+use App\Models\Instructors\InstructorsInstructorsM;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -60,16 +61,10 @@ class UsersUsersM extends Authenticatable implements JWTSubject
         return [];
     }
 
-     // public function getLocationAttribute($value)
-    // {
-    //     $location = json_decode($value, true);
-    //     return $location ? $location['government_name'] . ',' . $location['country_name'] : null;
-    // }
-    // public function getCountryAttribute($value)
-    // {
-    // $country = json_decode($value, true);
-    // return $country ? $country['country_name'] : null;
-    // }
+    public function instructor()
+    {
+    return $this->hasOne(InstructorsInstructorsM::class);
+    }
 
 
 
