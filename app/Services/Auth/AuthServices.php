@@ -76,37 +76,35 @@ class AuthServices
 
   static public function Login(array $array)
   {
-    // dd($array);
-    $user = UsersUsersM::where('email', $array['email'])
-    ->orWhere('userName', $array['email'])
-    ->first();
-    //  dd($user);
-    if (!$user || !\Hash::check($array['password'], $user->password))
-    {
+      $field = filter_var($array['email'], FILTER_VALIDATE_EMAIL) ? 'email' : 'userName';
+
+      $user = UsersUsersM::where($field, $array['email'])->first();
+
+      if (!$user || !\Hash::check($array['password'], $user->password)) {
+          return null;
+      }
+
+      if ($user->jwt_token) {
+          return 'device_error';
+      }
+
+      $token = auth('api')->attempt([
+          $field => $array['email'],
+          'password' => $array['password'],
+      ]);
+
+      if ($token) {
+          $user->update(['jwt_token' => $token]);
+
+          return [
+              'user' => $user,
+              'role' => $user->role->name,
+              'access_token' => $token,
+              'token_type' => 'Bearer',
+          ];
+      }
+
       return null;
-    }
-    if ($user->jwt_token) {
-      return 'device_error';
-    }
-   $field = filter_var($array['email'], FILTER_VALIDATE_EMAIL) ? 'email' : 'userName';
-    $token = auth('api')->attempt([
-        $field => $array['email'],
-        'password' => $array['password'],
-    ]);
-     //  dd($token);
-    if ($token) {
-        $user->update(['jwt_token' => $token]);
-
-        $data = [
-            'user' => $user,
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-        ];
-
-        return $data;
-    }
-
-    return null;
   }
 
 

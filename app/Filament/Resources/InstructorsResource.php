@@ -8,6 +8,7 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\Instructors;
 use Filament\Resources\Resource;
+use App\Models\Users\UsersUsersM;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
@@ -23,24 +24,17 @@ use App\Filament\Resources\InstructorsResource\RelationManagers;
 
 class InstructorsResource extends Resource
 {
-    protected static ?string $model = InstructorsInstructorsM::class;
+    protected static ?string $model = UsersUsersM::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
     protected static ?string $modelLabel = "Instructors";
-    static public function GenerateNewCode()
+    public static function getEloquentQuery(): Builder
     {
-        $code = \Illuminate\Support\Str::random(5);
-        if (InstructorsInstructorsM::where('code', $code)->exists()) {
-            return Self::GenerateNewCode();
-        } else {
-            return $code;
-        }
+        return parent::getEloquentQuery()
+        ->whereHas('role', function ($query) {
+            $query->where('name', 'instructor');
+        });
     }
-    protected static function beforeCreate($record): void
-    {
-    $record->code = self::GenerateNewCode();
-    }
-    
     public static function form(Form $form): Form
     {
         return $form
@@ -62,10 +56,12 @@ class InstructorsResource extends Resource
                             ->required(),
                         TextInput::make('email')
                         ->label('Instructor Email')
-                        ->required(),
+                        ->required()
+                        ->readonly(),
                         TextInput::make('phone')
                         ->label('Instructor Phone')
-                        ->required(),
+                        ->required()
+                        ->readonly(),
                         TextInput::make('experince')
                             ->label('Instructor Experince')
                             ->required(),
@@ -130,7 +126,7 @@ class InstructorsResource extends Resource
     {
         return [
             'index' => Pages\ListInstructors::route('/'),
-            'create' => Pages\CreateInstructors::route('/create'),
+            // 'create' => Pages\CreateInstructors::route('/create'),
             'view' => Pages\ViewInstructors::route('/{record}'),
             'edit' => Pages\EditInstructors::route('/{record}/edit'),
         ];

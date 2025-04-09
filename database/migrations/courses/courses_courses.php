@@ -30,7 +30,7 @@ return new class extends Migration
             $table->enum('delivary_method', ['live', 'recorded'])->default('recorded');
             $table->decimal('discount', 5, 2)->default(0);
             $table->decimal('price_after', 10, 2)->nullable();
-            $table->foreignId('instructors_id')->references('id')->on('users_instructors')->constrained()->cascadeOnDelete();
+            $table->foreignId('instructors_id')->references('id')->on('users_users')->constrained()->cascadeOnDelete();
             $table->foreignId('category_id')->references('id')->on('categories_categories')->constrained()->cascadeOnDelete();
             $table->foreignId('subcategory_id')->references('id')->on('categories_subCategories')->constrained()->cascadeOnDelete();
             $table->string('timeZone')->nullable();

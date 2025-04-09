@@ -17,8 +17,8 @@ return new class extends Migration
             $table->collation = 'utf8_general_ci';
             $table->id();
             $table->string('code')->unique();
-            $table->string('name');
-            $table->string('userName')->unique();
+            $table->string('name')->nullable();
+            $table->string('userName')->unique()->nullable();
             $table->string('email')->unique();
             $table->string('phone')->nullable();
             $table->string('password');
@@ -31,8 +31,16 @@ return new class extends Migration
             $table->string('social_id')->nullable();
             $table->string('social_type')->nullable();
             $table->text('jwt_token')->nullable();
-            // $table->foreignId('country_id')->nullable()->references('id')->on('countries_countries')->constrained()->cascadeOnDelete();
-            // $table->foreignId('government_id')->nullable()->references('id')->on('countries_governments')->constrained()->cascadeOnDelete();
+            $table->foreignId('role_id')->nullable()->references('id')->on('roles')->constrained()->cascadeOnDelete();
+            // instructor-specific fields
+            $table->string('name_en')->nullable();
+            $table->string('name_ar')->nullable();
+            $table->string('experince')->nullable();
+            $table->string('linkedIn')->nullable();
+            $table->string('cv')->nullable();
+            $table->json('desc')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('website')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

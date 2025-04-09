@@ -8,6 +8,7 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Filament\Resources\Resource;
+use App\Models\Users\UsersUsersM;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use App\Models\Courses\CoursesCoursesM;
@@ -70,10 +71,10 @@ class CoursesResource extends Resource
                     ->required()
                     ->suffix('EGP')
                     ->live(),
-              TextInput::make('discount')
-                ->numeric()
-                ->default(0)
-                ->suffix('%'),
+                TextInput::make('discount')
+                    ->numeric()
+                    ->default(0)
+                    ->suffix('%'),
                 Select::make('status')
                     ->label('Status')
                     ->required()
@@ -82,13 +83,13 @@ class CoursesResource extends Resource
                         'free' => 'Free',
                     ]),
                 Select::make('delivary_method')
-                        ->label('Delivary Method')
-                        ->required()
-                        ->options([
-                            'live' => 'Live',
-                            'recorded' => 'Recorded',
-                        ]),
-                    Select::make('category_id')
+                    ->label('Delivary Method')
+                    ->required()
+                    ->options([
+                        'live' => 'Live',
+                        'recorded' => 'Recorded',
+                    ]),
+                Select::make('category_id')
                     ->label('Category')
                     ->required()
                     ->relationship('category', 'name')
@@ -98,26 +99,27 @@ class CoursesResource extends Resource
                     ->label('Sub Category')
                     ->required()
                     ->options(function (callable $get) {
-                        $categoryId = $get('category_id');
-
-                        if (!$categoryId) {
+                    $categoryId = $get('category_id');
+                    if (!$categoryId) {
                             return [];
-                        }
-                        $category = CategoriesCategoriesM::with('subCategories')->find($categoryId);
-
-                        return $category?->subCategories
-                            ->pluck('name.en', 'id')
-                            ->toArray();
+                    }
+                    $category = CategoriesCategoriesM::with('subCategories')->find($categoryId);
+                    return $category?->subCategories
+                        ->pluck('name.en', 'id')
+                        ->toArray();
                     })
                     ->reactive()
                     ->disabled(fn (callable $get) => !$get('category_id')),
 
-
                 Select::make('instructors_id')
-                        ->label('Instructor')
-                        ->required()
-                        ->relationship('instructor', 'name')
-                        ->getOptionLabelFromRecordUsing(fn ($record) => $record->name['en'] ?? ''),
+                    ->label('Instructor')
+                    ->options(function () {
+                        return UsersUsersM::whereHas('role', function ($q) {
+                            $q->where('id', '2');
+                        })->pluck('name_en', 'id');
+                    })
+                    ->searchable()
+                    ->required(),
                 FileUpload::make('image')
                         ->required()
                         ->label("Image")

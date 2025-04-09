@@ -46,7 +46,7 @@ class CoursesServices
     public static function GetByCode($code)
     {
         $course =CoursesCoursesM::with([
-                "instructor",
+                "instructor:id,name_en,name_ar,desc,image,facebook,linkedIn",
                 "modules",
                 "modules.moduleItem",
                 "courseVideo.moduleItem",

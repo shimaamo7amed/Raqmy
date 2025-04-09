@@ -91,7 +91,7 @@ class InstructorsFormResource extends Resource
                 ->requiresConfirmation()
                 ->action(function ($record) {
                     $password = Str::random(8);
-                    InstructorsInstructorsM::create([
+                    UsersUsersM::create([
                         'code' => self::GenerateNewCode(),
                         'name_en' => $record->name_en,
                         'name_ar' => $record->name_ar,
@@ -101,6 +101,7 @@ class InstructorsFormResource extends Resource
                         'linkedIn' => $record->linkedIn,
                         'cv' => $record->cv,
                         'password' => Hash::make($password),
+                        'role_id' =>2,
                     ]);
                     $record->delete(); 
                 Mail::to($record->email)->send(new InstructorAccepted($password, $record->name_en, $record->email));

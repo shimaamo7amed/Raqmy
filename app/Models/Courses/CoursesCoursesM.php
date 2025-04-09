@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models\Courses;
+use App\Models\Users\UsersUsersM;
 use App\Models\Rates\CourseRatesM;
 use App\Models\Courses\PromoCodesM;
 use App\Models\Courses\CoursesVideosM;
@@ -46,8 +47,9 @@ class CoursesCoursesM extends Model
     ];
     public function instructor()
     {
-        return $this->belongsTo(InstructorsInstructorsM::class, 'instructors_id');
+     return $this->belongsTo(UsersUsersM::class, 'instructors_id');
     }
+
     public function category()
     {
         return $this->belongsTo(CategoriesCategoriesM::class, 'category_id');

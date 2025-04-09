@@ -16,7 +16,7 @@ return new class extends Migration
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
             $table->id();
-            $table->string('code')->unique();
+            // $table->string('code')->unique();
             $table->string('name_en');
             $table->string('name_ar');
             $table->string('email')->unique();
