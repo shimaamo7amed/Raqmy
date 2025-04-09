@@ -8,6 +8,11 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\Instructors;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Textarea;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
@@ -35,31 +40,41 @@ class InstructorsResource extends Resource
     {
     $record->code = self::GenerateNewCode();
     }
-  
+    
     public static function form(Form $form): Form
     {
         return $form
                 ->schema([
-                Forms\Components\Section::make('Instructors')
+                    Section::make('Instructors')
                     ->schema([
-                        Forms\Components\Hidden::make('code')
-                        ->default(fn () => self::GenerateNewCode()),
-                        Forms\Components\TextInput::make('name.en')
-                            ->label('Name (English)')
-                            ->required(),
-                        Forms\Components\TextInput::make('name.ar')
-                            ->label('Name (Arabic)')
-                            ->required(),
-                        Forms\Components\Textarea::make('desc.en')
+                        Grid::make(2)->schema([
+                        TextInput::make('name_en')
+                        ->label('Name (English)')
+                        ->required(),
+                        TextInput::make('name_ar')
+                        ->label('Name (Arabic)')
+                        ->required(),
+                        Textarea::make('desc.en')
                             ->label('Description (English)')
                             ->required(),
-                        Forms\Components\Textarea::make('desc.ar')
+                        Textarea::make('desc.ar')
                             ->label('Description (Arabic)')
                             ->required(),
-                        Forms\Components\TextInput::make('facebook')
+                        TextInput::make('email')
+                        ->label('Instructor Email')
+                        ->required(),
+                        TextInput::make('phone')
+                        ->label('Instructor Phone')
+                        ->required(),
+                        TextInput::make('experince')
+                            ->label('Instructor Experince')
+                            ->required(),
+                        TextInput::make('facebook')
                             ->label('facebook'),
-                        Forms\Components\TextInput::make('linkedIn')
+                        TextInput::make('linkedIn')
                             ->label('linkedIn'),
+                        TextInput::make('website')
+                            ->label('Website'),
                             FileUpload::make('image')
                             ->required()
                             ->label("Image")
@@ -68,7 +83,14 @@ class InstructorsResource extends Resource
                             ->imageEditorMode(2)
                             ->downloadable()
                             ->directory('InstructorImages'),
+                        FileUpload::make('cv')
+                            ->label("CV")
+                            ->visibility('public')
+                            ->downloadable()
+                            ->openable()
+                            ->preserveFilenames()
                     ]),
+                    ])
             ]);
     }
 
@@ -76,13 +98,12 @@ class InstructorsResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\TextColumn::make('code'),
+                TextColumn::make('id'),
+                TextColumn::make('name_en'),
+                TextColumn::make('email'),
+                TextColumn::make('phone'),
+                TextColumn::make('experince'),
                 ImageColumn::make("image"),
-                Tables\Columns\TextColumn::make('name.en')
-                ->label('Name'),
-                Tables\Columns\TextColumn::make('desc.en')
-                    ->label('Description'),
             ])
             ->filters([
                 //

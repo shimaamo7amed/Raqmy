@@ -22,10 +22,17 @@ class InstructorsInstructorsM extends Model
     'linkedIn',
     'experince',
     'cv',
-    'password'
+    'password',
+    'desc',
+    'image',
+    'facebook',
+    'website',
     ];
     protected $hidden = [
         'id',
+    ];
+     protected $casts = [
+        'desc' => 'array',
     ];
        public function courses()
     {

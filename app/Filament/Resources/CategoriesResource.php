@@ -7,6 +7,7 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
@@ -54,10 +55,9 @@ class CategoriesResource extends Resource
     {
         return $table
             ->columns([
-                 Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\TextColumn::make('code'),
-                Tables\Columns\TextColumn::make('name.en')
-                ->label('Name'),
+                TextColumn::make('id'),
+                TextColumn::make('code'),
+                TextColumn::make('name.en'),
                 ImageColumn::make("image"),
 
             ])

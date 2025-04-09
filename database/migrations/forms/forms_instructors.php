@@ -18,9 +18,9 @@ return new class extends Migration
             $table->id();
             $table->string('name_en');
             $table->string('name_ar');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('phone');
-            $table->decimal('experince');
+            $table->string('experince');
             $table->string('linkedIn');
             $table->string('cv');
             $table->longText('message');

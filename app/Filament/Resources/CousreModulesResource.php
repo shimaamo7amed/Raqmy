@@ -59,10 +59,8 @@ class CousreModulesResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id'),
-                TextColumn::make('title.en')
-                ->label('Title  (English)'),
-                TextColumn::make('course.name.en')
-                ->label('Course'),
+                TextColumn::make('title.en'),
+                TextColumn::make('course.name.en'),
             ])
             ->filters([
                 //

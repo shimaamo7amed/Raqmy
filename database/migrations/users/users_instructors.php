@@ -19,12 +19,16 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->string('name_en');
             $table->string('name_ar');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('phone');
-            $table->decimal('experince');
+            $table->string('experince');
             $table->string('linkedIn')->nullable();
             $table->string('cv')->nullable();
             $table->string('password');
+            $table->json('desc')->nullable();
+            $table->string('image')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('website')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

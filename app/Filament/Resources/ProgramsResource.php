@@ -129,18 +129,14 @@ class ProgramsResource extends Resource
             ->columns([
                 TextColumn::make('id')
                 ->label('ID'),
-                TextColumn::make('title.en')
-                ->label('Name (English)'),
+                TextColumn::make('title.en'),
                 TextColumn::make('total_price')
-                ->label('Price')
                   ->money('EGP')
                 ->sortable(),
                 TextColumn::make('price_after')
-                ->label('Price After')
                   ->money('EGP')
                 ->sortable(),
                 TextColumn::make('courses_video')
-                ->label('Video')
                 ->formatStateUsing(function ($state) {
                 return '<video width="320" height="240" controls>
                 <source src="'.asset('storage/'.$state).'" type="video/mp4">

@@ -76,10 +76,8 @@ class CousreVideosResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id'),
-                TextColumn::make('moduleItem.content.en')
-                ->label('Time'),
+                TextColumn::make('moduleItem.content.en'),
                 TextColumn::make('video')
-                ->label('Video')
                 ->formatStateUsing(function ($state) {
                 return '<video width="320" height="240" controls>
                 <source src="'.asset('storage/'.$state).'" type="video/mp4">

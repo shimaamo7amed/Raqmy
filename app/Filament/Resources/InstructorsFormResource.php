@@ -74,16 +74,11 @@ class InstructorsFormResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id'),
-                TextColumn::make('name_en')
-                ->label(' Name'),
-                TextColumn::make('email')
-                ->label('Email'),
-                TextColumn::make('phone')
-                ->label('Phone'),
-                TextColumn::make('experince')
-                ->label('Experince'),
-                TextColumn::make('message')
-                ->label('Message'),
+                TextColumn::make('name_en'),
+                TextColumn::make('email'),
+                TextColumn::make('phone'),
+                TextColumn::make('experince'),
+                TextColumn::make('message'),
             ])
             ->filters([
                 //

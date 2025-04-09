@@ -165,21 +165,16 @@ class CoursesResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name.en')
-                ->label('Name'),
-                TextColumn::make('instructor.name.en')
-                ->label('Instructor'),
-                TextColumn::make('price')
-                ->label('Price'),
-                    TextColumn::make('price')
+            TextColumn::make('name.en'),
+            TextColumn::make('instructor.name.en'),
+            TextColumn::make('price'),
+            TextColumn::make('price')
                 ->sortable()
                 ->money('EGP'),
             TextColumn::make('discount')
-                ->label('Discount %')
                 ->sortable()
                 ->suffix('%'),
             TextColumn::make('discounted_price')
-                ->label('Price After Discount')
                 ->money('EGP')
                 ->sortable(),
                 TextColumn::make('category.name.en')

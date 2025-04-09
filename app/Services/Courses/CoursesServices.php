@@ -27,7 +27,7 @@ class CoursesServices
         ->with([
             'category:id,name',
             'subcategory:id,name',
-            'instructor:id,name',
+            'instructor:id,name_en,name_ar',
             'courseVideo.moduleItem',
             'rates:id,course_id,user_id,rates',
         ])
@@ -83,7 +83,7 @@ class CoursesServices
         $courses = CoursesCoursesM::with([
             'category:id,name',
             'subcategory:id,name',
-            'instructor:id,name',
+            'instructor:id,name_en,name_ar',
             "courseVideo.moduleItem",
             'rates:id,course_id,user_id,rates',
         ])

@@ -71,10 +71,8 @@ class CousreModulesItemResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id'),
-                TextColumn::make('content.en')
-                ->label('content  (English)'),
+                TextColumn::make('content.en'),
                 TextColumn::make('module.title.en')
-                ->label('Module')
             ])
             ->filters([
                 //

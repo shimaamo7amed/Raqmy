@@ -7,6 +7,9 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\Forms\FormsFAQM;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Textarea;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\FAQResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -24,18 +27,18 @@ class FAQResource extends Resource
     {
         return $form
             ->schema([
-               Forms\Components\TextInput::make('question.en')
-                            ->label('Question (English)')
-                            ->required(),
-                        Forms\Components\TextInput::make('question.ar')
-                            ->label('Question (Arabic)')
-                            ->required(),
-                        Forms\Components\Textarea::make('answer.en')
-                            ->label('Answer (English)')
-                            ->required(),
-                        Forms\Components\Textarea::make('answer.ar')
-                            ->label('Answer (Arabic)')
-                            ->required(),
+                TextInput::make('question.en')
+                    ->label('Question (English)')
+                    ->required(),
+                TextInput::make('question.ar')
+                    ->label('Question (Arabic)')
+                    ->required(),
+                Textarea::make('answer.en')
+                    ->label('Answer (English)')
+                    ->required(),
+                Textarea::make('answer.ar')
+                    ->label('Answer (Arabic)')
+                    ->required(),
             ]);
     }
 
@@ -43,15 +46,11 @@ class FAQResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id'),
-                    Tables\Columns\TextColumn::make('question.en')
-                    ->label('Question (English)'),
-                Tables\Columns\TextColumn::make('question.ar')
-                    ->label('Question (Arabic)'),
-                    Tables\Columns\TextColumn::make('answer.en')
-                    ->label('Answer (English)'),
-                Tables\Columns\TextColumn::make('answer.ar')
-                    ->label('Answer (Arabic)'),
+                TextColumn::make('id'),
+                TextColumn::make('question.en'),
+                TextColum::make('question.ar'),
+                TextColumn::make('answer.en'),
+                TextColumn::make('answer.ar'),
             ])
             ->filters([
                 //
