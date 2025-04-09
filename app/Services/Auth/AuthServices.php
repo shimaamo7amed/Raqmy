@@ -77,17 +77,13 @@ class AuthServices
   static public function Login(array $array)
   {
       $field = filter_var($array['email'], FILTER_VALIDATE_EMAIL) ? 'email' : 'userName';
-
       $user = UsersUsersM::where($field, $array['email'])->first();
-
       if (!$user || !\Hash::check($array['password'], $user->password)) {
           return null;
       }
-
       if ($user->jwt_token) {
           return 'device_error';
       }
-
       $token = auth('api')->attempt([
           $field => $array['email'],
           'password' => $array['password'],

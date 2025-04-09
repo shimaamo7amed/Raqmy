@@ -168,14 +168,14 @@ class CoursesResource extends Resource
         return $table
             ->columns([
             TextColumn::make('name.en'),
-            TextColumn::make('instructor.name.en'),
+            TextColumn::make('instructor.name_en'),
             TextColumn::make('price'),
             TextColumn::make('price')
                 ->sortable()
                 ->money('EGP'),
-            TextColumn::make('discount')
-                ->sortable()
-                ->suffix('%'),
+            // TextColumn::make('discount')
+            //     ->sortable()
+            //     ->suffix('%'),
             TextColumn::make('discounted_price')
                 ->money('EGP')
                 ->sortable(),

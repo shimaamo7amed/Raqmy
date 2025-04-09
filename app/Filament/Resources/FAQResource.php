@@ -48,7 +48,7 @@ class FAQResource extends Resource
             ->columns([
                 TextColumn::make('id'),
                 TextColumn::make('question.en'),
-                TextColum::make('question.ar'),
+                TextColumn::make('question.ar'),
                 TextColumn::make('answer.en'),
                 TextColumn::make('answer.ar'),
             ])
