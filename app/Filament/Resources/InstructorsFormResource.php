@@ -58,6 +58,8 @@ class InstructorsFormResource extends Resource
                 ->label('Experince'),
                 TextInput::make('linkedIn')
                 ->label('LinkedIn'),
+                TextInput::make('facebook')
+                ->label('Facebook'),
                 TextInput::make('message')
                 ->label('Message'),
                 FileUpload::make('cv')
@@ -99,11 +101,12 @@ class InstructorsFormResource extends Resource
                         'phone' => $record->phone,
                         'experince' => $record->experince,
                         'linkedIn' => $record->linkedIn,
+                        'facebook' => $record->facebook,
                         'cv' => $record->cv,
                         'password' => Hash::make($password),
                         'role_id' =>2,
                     ]);
-                    $record->delete(); 
+                    $record->delete();
                 Mail::to($record->email)->send(new InstructorAccepted($password, $record->name_en, $record->email));
                 }),
                 Action::make('reject')

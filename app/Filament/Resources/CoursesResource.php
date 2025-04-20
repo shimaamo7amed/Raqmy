@@ -46,7 +46,7 @@ class CoursesResource extends Resource
         return $form
             ->schema([
                 Hidden::make('code')
-                    ->default(fn () => self::GenerateNewCode()),
+                    ->default(fn() => self::GenerateNewCode()),
                 TextInput::make('name.en')
                     ->label('Name (English)')
                     ->required(),
@@ -93,23 +93,23 @@ class CoursesResource extends Resource
                     ->label('Category')
                     ->required()
                     ->relationship('category', 'name')
-                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->name['en'] ?? '')
+                    ->getOptionLabelFromRecordUsing(fn($record) => $record->name['en'] ?? '')
                     ->reactive(),
-                    Select::make('subcategory_id')
+                Select::make('subcategory_id')
                     ->label('Sub Category')
                     ->required()
                     ->options(function (callable $get) {
-                    $categoryId = $get('category_id');
-                    if (!$categoryId) {
+                        $categoryId = $get('category_id');
+                        if (!$categoryId) {
                             return [];
-                    }
-                    $category = CategoriesCategoriesM::with('subCategories')->find($categoryId);
-                    return $category?->subCategories
-                        ->pluck('name.en', 'id')
-                        ->toArray();
+                        }
+                        $category = CategoriesCategoriesM::with('subCategories')->find($categoryId);
+                        return $category?->subCategories
+                            ->pluck('name.en', 'id')
+                            ->toArray();
                     })
                     ->reactive()
-                    ->disabled(fn (callable $get) => !$get('category_id')),
+                    ->disabled(fn(callable $get) => !$get('category_id')),
 
                 Select::make('instructors_id')
                     ->label('Instructor')
@@ -121,68 +121,68 @@ class CoursesResource extends Resource
                     ->searchable()
                     ->required(),
                 FileUpload::make('image')
-                        ->required()
-                        ->label("Image")
-                        ->disk('public')
-                        ->directory('CoursesImage'),
+                    ->required()
+                    ->label("Image")
+                    ->disk('public')
+                    ->directory('CoursesImage'),
                 FileUpload::make('main_video')
-                ->label('Upload Video')
-                ->disk('public')  // Specify disk (you can use 'public' or others)
-                ->directory('videos')  // Specify the directory inside storage
-                ->acceptedFileTypes(['video/mp4', 'video/avi', 'video/mkv']) // Limit file types to videos
-                ->maxSize(10240)  // Set max size in KB (10MB in this case)
-                ->columnSpan(1),  // Optional, to adjust the layout
+                    ->label('Upload Video')
+                    ->disk('public')  // Specify disk (you can use 'public' or others)
+                    ->directory('videos')  // Specify the directory inside storage
+                    ->acceptedFileTypes(['video/mp4', 'video/avi', 'video/mkv']) // Limit file types to videos
+                    ->maxSize(10240)  // Set max size in KB (10MB in this case)
+                    ->columnSpan(1),  // Optional, to adjust the layout
                 TextInput::make("video_time")
-                ->label("Video Time"),
+                    ->label("Video Time"),
                 Repeater::make('goals')
-                        ->label('Course Goals')
-                        ->schema([
+                    ->label('Course Goals')
+                    ->schema([
                         TextInput::make('en')
                             ->label('Goal (English)')
                             ->required(),
                         TextInput::make('ar')
-                        ->label('Goal (Arabic)')
-                        ->required(),
-                        ])
-                        ->columns(2)
-                        ->minItems(1)
-                        ->addActionLabel('Add New Goal'),
+                            ->label('Goal (Arabic)')
+                            ->required(),
+                    ])
+                    ->columns(2)
+                    ->minItems(1)
+                    ->addActionLabel('Add New Goal'),
                 Repeater::make('users')
-                        ->label('Users')
-                        ->schema([
+                    ->label('Users')
+                    ->schema([
                         TextInput::make('en')
                             ->label('Users (English)')
                             ->required(),
                         TextInput::make('ar')
-                        ->label('Users (Arabic)')
-                        ->required(),
-                        ])
-                        ->columns(2)
-                        ->minItems(1)
-                        ->addActionLabel('Add New User'),
-        ]);
+                            ->label('Users (Arabic)')
+                            ->required(),
+                    ])
+                    ->columns(2)
+                    ->minItems(1)
+                    ->addActionLabel('Add New User'),
+            ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-            TextColumn::make('name.en'),
-            TextColumn::make('instructor.name_en'),
-            TextColumn::make('price'),
-            TextColumn::make('price')
-                ->sortable()
-                ->money('EGP'),
-            // TextColumn::make('discount')
-            //     ->sortable()
-            //     ->suffix('%'),
-            TextColumn::make('discounted_price')
-                ->money('EGP')
-                ->sortable(),
+                TextColumn::make('name.en'),
+                TextColumn::make('instructor.name_en'),
+                TextColumn::make('price'),
+                TextColumn::make('price')
+                    ->sortable()
+                    ->money('EGP'),
+                // TextColumn::make('discount')
+                //     ->sortable()
+                //     ->suffix('%'),
+                TextColumn::make('discounted_price')
+                    ->money('EGP')
+                    ->sortable(),
                 TextColumn::make('category.name.en')
-                ->label('Category'),
-            TextColumn::make('subcategory.name.en')
-                ->label('Sub Category'),
+                    ->label('Category'),
+                TextColumn::make('subcategory.name.en')
+                    ->label('Sub Category'),
             ])
 
             ->filters([

@@ -27,53 +27,37 @@ class UpdateProfileServices
   }
 
 
-  static public function UpdateProfile(UsersUsersM $user, array $data)
+  static public function UpdateProfile(array $data)
   {
-    $emailChanged = false;
-    if (isset($data['email']) && $data['email'] !== $user->email) {
-        $otp = rand(100000, 999999);
-        Cache::put('otp_' . $data['email'], $otp, now()->addMinutes(10));
-
-        Mail::to($data['email'])->send(new EmailOTP($otp, $user->name, $data['email']));
-
-        unset($data['email']);
-        $emailChanged = true;
-    }
-
-    if (isset($data['image']) && $data['image']->isValid()) {
-        $path = $data['image']->store('profile_images', 'public');
-        $data['image'] = $path;
-    }
-
-    $user->update($data);
-
-    if ($emailChanged) {
-        return response()->json([
-          'message' => ' Please verify your email OTP.'
-        ]);
-    }
-
-    return response()->json([
-        'message' => 'Profile updated successfully.',
-        'updated_data' => $user->fresh()
-    ]);
+    // dd($data);
+      $user=auth()->user();
+      if (!$user) {
+            throw new \Exception('User not found.');
+        }
+      $user->update($data);
+      // dd($user);
+       return $user;
   }
 
-
-  static public function verifyOtpAndUpdateEmail(UsersUsersM $user, string $otp, string $email)
+  static public function ChangeImage(array $data)
   {
-    $cachedOtp = Cache::get('otp_' . $email);
-    if ($cachedOtp && $cachedOtp == $otp) {
-        $user->update(['email' => $email]);
-        Cache::forget('otp_' . $email);
-        return response()->json([
-            'message' => 'Email verified and updated successfully.',
-            'updated_data' => $user->fresh()
-        ]);
+    $user = auth()->user();
+    if (!$user) {
+      throw new \Exception('User not found.');
+    }
+        if ($user->image && \Storage::exists($user->image)) {
+            \Storage::delete($user->image);
+        }
+        if (!isset($data['image']) || !$data['image']->isValid()) {
+            throw new \Exception('Invalid image uploaded.');
+        }
+        $path = $data['image']->store('users/images', 'public');
+        $user->image = $path;
+        $user->save();
+        // dd($user);
+        return $user;
     }
 
-    return response()->json(['message' => 'Invalid OTP.'], 400);
-  }
   
 
 

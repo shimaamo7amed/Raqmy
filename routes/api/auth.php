@@ -43,11 +43,6 @@ Route::name("api.auth.")
     ->group(function () {
     Route::post('changePassword', 'ChangePassword')->name("ChangePassword");
     Route::post('updateProfile', 'UpdateProfile')->name("UpdateProfile");
-    Route::post('verifyOtp', 'verifyOtp')->name("verifyOtp");
-    // Route::post('changeUserName', 'ChangeUserName')->name("ChangeUserName");
-    // Route::post('emailOTP', 'EmailOTP')->name("EmailOTP");
-    // Route::post('changeEmail', 'ChangeEmail')->name("ChangeEmail");
-    // Route::post('changePhone', 'ChangePhone')->name("ChangePhone");
-    // Route::post('changeLocation', 'ChangeLocation')->name("ChangeLocation");
+    Route::post('changeImage', 'ChangeImage')->name("ChangeImage");
     });
 });

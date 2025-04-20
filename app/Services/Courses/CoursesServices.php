@@ -31,7 +31,7 @@ class CoursesServices
             'courseVideo.moduleItem',
             'rates:id,course_id,user_id,rates',
         ])
-        ->select('id', 'code', 'name', 'desc', 'price','price_after', 'delivary_method', 'image','main_video', 'video_time', 'instructors_id', 'category_id','subcategory_id')
+        ->select('id', 'code', 'name', 'desc', 'price','price_after', 'delivary_method', 'status','image','main_video', 'video_time', 'instructors_id', 'category_id','subcategory_id')
         ->paginate($limit);
         if ($courses->isEmpty()) {
             return SystemApiResponseServices::ReturnSuccess(
@@ -80,24 +80,31 @@ class CoursesServices
     public static function search(array $array, $limit = 10)
     {
         // dd($array['search']);
-        $courses = CoursesCoursesM::with([
-            'category:id,name',
-            'subcategory:id,name',
-            'instructor:id,name_en,name_ar',
-            "courseVideo.moduleItem",
-            'rates:id,course_id,user_id,rates',
-        ])
-        ->where('name', 'like', '%' . $array['search'] . '%')
-        ->select('id', 'code', 'name', 'desc', 'price', 'delivary_method', 'image', 'main_video','video_time','instructors_id', 'category_id','subcategory_id')
-        ->paginate($limit);
+        // $courses = CoursesCoursesM::with([
+        //     'category:id,name',
+        //     'subcategory:id,name',
+        //     'instructor:id,name_en,name_ar',
+        //     "courseVideo.moduleItem",
+        //     'rates:id,course_id,user_id,rates',
+        // ])
+        // ->where('name', 'like', '%' . $array['search'] . '%')
+        // ->select('id', 'code', 'name', 'desc', 'price', 'delivary_method', 'image', 'main_video','video_time','instructors_id', 'category_id','subcategory_id')
+        // ->paginate($limit);
+        $searchTerm = strtolower($array['search']);
+        $courses = CoursesCoursesM::whereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(name, '$.en'))) LIKE ?", ['%' . $searchTerm . '%'])
+            ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(name, '$.ar'))) LIKE ?", ['%' . $searchTerm . '%'])
+            ->select('id', 'code', 'name', 'image')
+            ->get();
+
         if ($courses->isEmpty()) {
-        return [];
+            return [];
         }
 
-      return $courses;
+    return $courses;
     }
 
-}
 
+
+}
 
 

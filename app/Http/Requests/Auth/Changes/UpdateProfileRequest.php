@@ -29,14 +29,11 @@ class UpdateProfileRequest extends FormRequest
         $userId = auth()->id();
         return [
         'name' => 'required|string|min:2|max:45',
-        'userName' => 'required|string|unique:users_users,userName,' . $userId,
         "phone"=>"required|string|min_digits:11|max_digits:15",
         "email" => 'required|email|unique:users_users,email,' . $userId,
         "bio"=> "string|min:2|max:255",
-        "image"=>"image|mimes:png,jpg,jpeg",
         "government"=>"required|string",
         "country"=>"required|string",
-        "otp" => "required|numeric",
 
         ];
     }

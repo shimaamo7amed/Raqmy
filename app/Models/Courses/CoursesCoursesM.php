@@ -89,4 +89,3 @@ class CoursesCoursesM extends Model
     }
 
 }
-

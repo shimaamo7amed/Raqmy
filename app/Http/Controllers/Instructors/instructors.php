@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Instructors;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\Users\UsersUsersServices;
 use App\Services\system\SystemApiResponseServices;
 use App\Models\Instructors\InstructorsInstructorsM;
 use App\Services\instructories\instructoriesServices;
@@ -62,5 +63,10 @@ class instructors extends Controller
                         $th->getMessage(),
                     );
             }
+   }
+
+   public function myCoursesInstructors()
+   {
+       $myCourses = UsersUsersServices::myCoursesInstructors();
    }
 }
