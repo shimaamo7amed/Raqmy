@@ -20,11 +20,11 @@ class UsersUsersServices
     static public function myCoursesInstructors()
     {
 
-     $courses = UsersUsersM::where('role_id', 2)
-    ->with('courses')
-    ->get()
-    ->pluck('courses')
-    ->flatten(); // يجمع كل الكورسات في مجموعة واحدة
+        $courses = UsersUsersM::where('role_id', 2)
+        ->with('courses')
+        ->get()
+        ->pluck('courses')
+        ->flatten();
         dd($courses);
     }
 

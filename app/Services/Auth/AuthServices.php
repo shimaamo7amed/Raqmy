@@ -91,9 +91,34 @@ class AuthServices
 
       if ($token) {
           $user->update(['jwt_token' => $token]);
-
+      if ($user->role_id=='2') {
+       return[
+              'code' => $user->code,
+              'name_en' => $user->name_en,
+              'name_ar' => $user->name_ar,
+              'email' => $user->email,
+              'image' => $user->image,
+              'phone' => $user->phone,
+              'desc' => $user->desc,
+              'linkedIn' => $user->linkedIn,
+              'facebook' => $user->facebook,
+              'role' => $user->role->name,
+              'access_token' => $token,
+              'token_type' => 'Bearer',
+       ];
+      }
           return [
-              'user' => $user,
+              'code' => $user->code,
+              'name' => $user->name,
+              'userName' => $user->userName,
+              'email' => $user->email,
+              'image' => $user->image,
+              'phone' => $user->phone,
+              'gender' => $user->gender,
+              'country' => $user->country,
+              'government' => $user->government,
+              'social_id' => $user->social_id,
+              'social_type' => $user->social_type,
               'role' => $user->role->name,
               'access_token' => $token,
               'token_type' => 'Bearer',
