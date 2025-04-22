@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\App;
 
 class RaqmyAdminPanelProvider extends PanelProvider
 {
+
     public function panel(Panel $panel): Panel
     {
         return $panel
@@ -34,9 +35,9 @@ class RaqmyAdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->navigationItems([
-                NavigationItem::make()
-                    ->label(fn() => App::getLocale() === 'ar' ? 'EN' : 'AR')
+            ->userMenuItems([
+                MenuItem::make()
+                    ->label(fn() => App::getLocale() === 'ar' ? 'English' : 'العربية')
                     ->url(fn() => route('change-language', ['lang' => App::getLocale() === 'ar' ? 'en' : 'ar']))
                     ->icon('heroicon-o-globe-alt')
             ])
@@ -62,14 +63,8 @@ class RaqmyAdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
                 \App\Http\Middleware\SetLocale::class,
             ])
-            // ->databaseNotifications()
-            // ->databaseNotificationsPolling('15s')
-            // ->authMiddleware([
-            //     Authenticate::class,
-            // ])
             ->authGuard('admin')
             ->topNavigation()
-
             ->maxContentWidth(MaxWidth::Full);
     }
 }
