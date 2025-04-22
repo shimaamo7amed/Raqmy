@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Filament\Resources;
 
 use Filament\Forms;
@@ -29,18 +28,31 @@ class CoursesResource extends Resource
     protected static ?string $model = CoursesCoursesM::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
-    protected static ?string $navigationGroup = "Courses";
-    protected static ?string $modelLabel = "Courses";
-    public static function GenerateNewCode()
+    public static function getNavigationGroup(): ?string
+    {
+        return __('filament/courses/courses.group');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('filament/courses/courses.model');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament/courses/courses.plural');
+    }
+
+
+    static public function GenerateNewCode()
     {
         $code = Str::random(5);
         if (CoursesCoursesM::where('code', $code)->exists()) {
-            return self::GenerateNewCode();
+            return Self::GenerateNewCode();
         } else {
             return $code;
         }
     }
-
     public static function form(Form $form): Form
     {
         return $form
@@ -48,25 +60,25 @@ class CoursesResource extends Resource
                 Hidden::make('code')
                     ->default(fn() => self::GenerateNewCode()),
                 TextInput::make('name.en')
-                    ->label('Name (English)')
+                    ->label(__('filament/courses/courses.name') . ' (English)')
                     ->required(),
                 TextInput::make('name.ar')
-                    ->label('Name (Arabic)')
+                    ->label(__('filament/courses/courses.name') . ' (Arabic)')
                     ->required(),
                 Textarea::make('desc.en')
-                    ->label('Descrebtion(English)')
+                    ->label(__('filament/courses/courses.description') . ' (English)')
                     ->required(),
                 Textarea::make('desc.ar')
-                    ->label('Descrebtion (Arabic)')
+                    ->label(__('filament/courses/courses.description') . ' (Arabic)')
                     ->required(),
                 TextInput::make('notes.en')
-                    ->label('Notes (English)')
+                    ->label(__('filament/courses/courses.notes') . ' (English)')
                     ->required(),
                 TextInput::make('notes.ar')
-                    ->label('Notes (Arabic)')
+                    ->label(__('filament/courses/courses.notes') . ' (Arabic)')
                     ->required(),
                 TextInput::make('price')
-                    ->label('Price')
+                    ->label(__('filament/courses/courses.price'))
                     ->numeric()
                     ->required()
                     ->suffix('EGP')
@@ -74,29 +86,30 @@ class CoursesResource extends Resource
                 TextInput::make('discount')
                     ->numeric()
                     ->default(0)
+                    ->label(__('filament/courses/courses.discount'))
                     ->suffix('%'),
                 Select::make('status')
-                    ->label('Status')
+                    ->label(__('filament/courses/courses.status'))
                     ->required()
                     ->options([
                         'paid' => 'Paid',
                         'free' => 'Free',
                     ]),
                 Select::make('delivary_method')
-                    ->label('Delivary Method')
+                    ->label(__('filament/courses/courses.delivery_method'))
                     ->required()
                     ->options([
                         'live' => 'Live',
                         'recorded' => 'Recorded',
                     ]),
                 Select::make('category_id')
-                    ->label('Category')
+                    ->label(__('filament/courses/courses.category'))
                     ->required()
                     ->relationship('category', 'name')
                     ->getOptionLabelFromRecordUsing(fn($record) => $record->name['en'] ?? '')
                     ->reactive(),
                 Select::make('subcategory_id')
-                    ->label('Sub Category')
+                    ->label(__('filament/courses/courses.subcategory'))
                     ->required()
                     ->options(function (callable $get) {
                         $categoryId = $get('category_id');
@@ -112,7 +125,7 @@ class CoursesResource extends Resource
                     ->disabled(fn(callable $get) => !$get('category_id')),
 
                 Select::make('instructors_id')
-                    ->label('Instructor')
+                    ->label(__('filament/courses/courses.instructor'))
                     ->options(function () {
                         return UsersUsersM::whereHas('role', function ($q) {
                             $q->where('id', '2');
@@ -122,39 +135,39 @@ class CoursesResource extends Resource
                     ->required(),
                 FileUpload::make('image')
                     ->required()
-                    ->label("Image")
+                    ->label(__('filament/courses/courses.image'))
                     ->disk('public')
                     ->directory('CoursesImage'),
                 FileUpload::make('main_video')
-                    ->label('Upload Video')
-                    ->disk('public')  // Specify disk (you can use 'public' or others)
-                    ->directory('videos')  // Specify the directory inside storage
-                    ->acceptedFileTypes(['video/mp4', 'video/avi', 'video/mkv']) // Limit file types to videos
-                    ->maxSize(10240)  // Set max size in KB (10MB in this case)
-                    ->columnSpan(1),  // Optional, to adjust the layout
+                    ->label(__('filament/courses/courses.video'))
+                    ->disk('public')
+                    ->directory('videos')
+                    ->acceptedFileTypes(['video/mp4', 'video/avi', 'video/mkv'])
+                    ->maxSize(10240)
+                    ->columnSpan(1),
                 TextInput::make("video_time")
-                    ->label("Video Time"),
+                    ->label(__('filament/courses/courses.video_time')),
                 Repeater::make('goals')
-                    ->label('Course Goals')
+                    ->label(__('filament/courses/courses.goals'))
                     ->schema([
                         TextInput::make('en')
-                            ->label('Goal (English)')
+                            ->label(__('filament/courses/courses.goals') . ' (English)')
                             ->required(),
                         TextInput::make('ar')
-                            ->label('Goal (Arabic)')
+                            ->label(__('filament/courses/courses.goals') . ' (Arabic)')
                             ->required(),
                     ])
                     ->columns(2)
                     ->minItems(1)
                     ->addActionLabel('Add New Goal'),
                 Repeater::make('users')
-                    ->label('Users')
+                    ->label(__('filament/courses/courses.users'))
                     ->schema([
                         TextInput::make('en')
-                            ->label('Users (English)')
+                            ->label(__('filament/courses/courses.users') . ' (English)')
                             ->required(),
                         TextInput::make('ar')
-                            ->label('Users (Arabic)')
+                            ->label(__('filament/courses/courses.users') . ' (Arabic)')
                             ->required(),
                     ])
                     ->columns(2)

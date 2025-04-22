@@ -23,8 +23,17 @@ class CousreModulesItemResource extends Resource
 {
     protected static ?string $model = CoursesModuleItemsM::class;
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document';
-    protected static ?string $navigationGroup = "Courses";
-    protected static ?string $modelLabel = "CourseModuleItems";
+    // protected static ?string $navigationGroup = "Courses";
+    // protected static ?string $modelLabel = "CourseModuleItems";
+     public static function getNavigationGroup(): ?string
+    {
+        return __('filament/courses.group');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('filament/courses.modelItem');
+    }
     static public function GenerateNewCode()
     {
         $code = Str::random(5);

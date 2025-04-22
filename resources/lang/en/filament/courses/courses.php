@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'group' => 'Courses',
+    'model' => 'Courses',
+    'modelItem' => 'CourseModuleItems',
+    'create' => 'Create Course',
+    'edit' => 'Edit Course',
+    'delete' => 'Delete Course',
+    'name' => 'Course Name',
+    'description' => 'Description',
+    'price' => 'Price',
+    'status' => 'Status',
+    'delivery_method' => 'Delivery Method',
+    'category' => 'Category',
+    'subcategory' => 'Sub Category',
+    'instructor' => 'Instructor',
+    'image' => 'Course Image',
+    'video' => 'Course Video',
+    'video_time' => 'Video Duration',
+    'goals' => 'Course Goals',
+    'users' => 'Target Users',
+    'notes' => 'Notes',
+    'discount' => 'Discount',
+    'discounted_price' => 'Discounted Price',
+];
