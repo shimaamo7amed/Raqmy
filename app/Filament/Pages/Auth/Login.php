@@ -118,18 +118,20 @@ class Login extends BaseLogin
 
         FilamentView::registerRenderHook(
             'panels::body.start',
-            fn(): string => '
-                <div class="fixed top-4 right-4 flex items-center space-x-4">
-                    <select id="language-select" class="bg-white border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
-                        <option value="ar" ' . (App::getLocale() === 'ar' ? 'selected' : '') . '>العربية</option>
-                        <option value="en" ' . (App::getLocale() === 'en' ? 'selected' : '') . '>English</option>
-                    </select>
+            fn (): string => '
+                <div class="fixed top-4 right-4 flex items-center gap-2">
+                    <a href="' . route('change-language', ['lang' => 'ar']) . '"
+                       class="px-3 py-2 text-sm font-medium rounded-lg transition ' .
+                       (App::getLocale() === 'ar' ? 'bg-primary-500 text-white' : 'text-gray-700 hover:bg-gray-100') . '">
+                        العربية
+                    </a>
+                    <span class="text-gray-400">|</span>
+                    <a href="' . route('change-language', ['lang' => 'en']) . '"
+                       class="px-3 py-2 text-sm font-medium rounded-lg transition ' .
+                       (App::getLocale() === 'en' ? 'bg-primary-500 text-white' : 'text-gray-700 hover:bg-gray-100') . '">
+                        English
+                    </a>
                 </div>
-                <script>
-                    document.getElementById("language-select").addEventListener("change", function() {
-                        window.location.href = "' . url('change-language') . '/" + this.value;
-                    });
-                </script>
             '
         );
     }
