@@ -11,9 +11,11 @@ return [
     'fields' => [
         'email' => [
             'label' => 'Email',
+            'placeholder' => 'Enter your email',
         ],
         'password' => [
             'label' => 'Password',
+            'placeholder' => 'Enter your password',
         ],
     ],
     'messages' => [

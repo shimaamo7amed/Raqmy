@@ -38,3 +38,11 @@ Route::get('mail', function () {
     ];
     return view("mails.verify", $data);
 });
+
+Route::get('change-language/{lang}', function ($lang) {
+    if (in_array($lang, ['ar', 'en'])) {
+        session(['locale' => $lang]);
+        app()->setLocale($lang);
+    }
+    return redirect()->back();
+})->name('change-language');
