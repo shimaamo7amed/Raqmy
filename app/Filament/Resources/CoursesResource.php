@@ -180,31 +180,36 @@ class CoursesResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name.en'),
-                TextColumn::make('instructor.name_en'),
-                TextColumn::make('price'),
+                TextColumn::make('name.en')
+                    ->label(__('filament/courses/courses.name')),
+                TextColumn::make('instructor.name_en')
+                    ->label(__('filament/courses/courses.instructor')),
                 TextColumn::make('price')
+                    ->label(__('filament/courses/courses.price'))
                     ->sortable()
                     ->money('EGP'),
-                // TextColumn::make('discount')
-                //     ->sortable()
-                //     ->suffix('%'),
                 TextColumn::make('discounted_price')
+                    ->label(__('filament/courses/courses.discounted_price'))
                     ->money('EGP')
                     ->sortable(),
                 TextColumn::make('category.name.en')
-                    ->label('Category'),
+                    ->label(__('filament/courses/courses.category')),
                 TextColumn::make('subcategory.name.en')
-                    ->label('Sub Category'),
+                    ->label(__('filament/courses/courses.subcategory')),
+                TextColumn::make('status')
+                    ->label(__('filament/courses/courses.status'))
+                    ->formatStateUsing(fn ($state) => $state === 'paid' ? 'Paid' : 'Free'),
+                TextColumn::make('delivary_method')
+                    ->label(__('filament/courses/courses.delivery_method'))
+                    ->formatStateUsing(fn ($state) => $state === 'live' ? 'Live' : 'Recorded'),
             ])
-
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-            Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

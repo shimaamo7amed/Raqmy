@@ -31,8 +31,20 @@ class InstructorsFormResource extends Resource
   protected static ?string $model = FormsInstructorsM::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-bars-arrow-down';
-    protected static ?string $navigationGroup = "Forms";
-    protected static ?string $modelLabel = "InstructorsForm";
+    public static function getNavigationGroup(): ?string
+    {
+        return __('filament/forms/FormsInstructors.group');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('filament/forms/FormsInstructors.model');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament/forms/FormsInstructors.plural');
+    }
  static public function GenerateNewCode()
     {
         $code = \Illuminate\Support\Str::random(5);
@@ -47,23 +59,23 @@ class InstructorsFormResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name_en')
-                ->label('English Name'),
+                ->label(__('filament/forms/FormsInstructors.name_en')),
                 TextInput::make('name_ar')
-                ->label('Arabic Name'),
+                ->label(__('filament/forms/FormsInstructors.name_ar')),
                 TextInput::make('email')
-                ->label('Email'),
+                ->label(__('filament/forms/FormsInstructors.email')),
                 TextInput::make('phone')
-                ->label('Phone'),
+                ->label(__('filament/forms/FormsInstructors.phone')),
                 TextInput::make('experince')
-                ->label('Experince'),
+                ->label(__('filament/forms/FormsInstructors.experince')),
                 TextInput::make('linkedIn')
-                ->label('LinkedIn'),
+                ->label(__('filament/forms/FormsInstructors.linkedIn')),
                 TextInput::make('facebook')
-                ->label('Facebook'),
+                ->label(__('filament/forms/FormsInstructors.facebook')),
                 TextInput::make('message')
-                ->label('Message'),
+                ->label(__('filament/forms/FormsInstructors.message')),
                 FileUpload::make('cv')
-                ->label("CV")
+                ->label(__('filament/forms/FormsInstructors.cv'))
                 ->visibility('public')
                 ->downloadable()
                 ->openable()
@@ -76,11 +88,12 @@ class InstructorsFormResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id'),
-                TextColumn::make('name_en'),
-                TextColumn::make('email'),
-                TextColumn::make('phone'),
-                TextColumn::make('experince'),
-                TextColumn::make('message'),
+                TextColumn::make('name_en')
+                ->label(__('filament/forms/FormsInstructors.name_en')),
+                TextColumn::make('email')->label(__('filament/forms/FormsInstructors.email')),
+                TextColumn::make('phone')->label(__('filament/forms/FormsInstructors.phone')),
+                TextColumn::make('experince')->label(__('filament/forms/FormsInstructors.experince')),
+                TextColumn::make('message')->label(__('filament/forms/FormsInstructors.message')),
             ])
             ->filters([
                 //
@@ -88,7 +101,7 @@ class InstructorsFormResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                   Action::make('accept')
-                ->label('Accept')
+                ->label(__('filament/forms/FormsInstructors.accept'))
                 ->icon('heroicon-o-check-circle')
                 ->requiresConfirmation()
                 ->action(function ($record) {
@@ -110,7 +123,7 @@ class InstructorsFormResource extends Resource
                 Mail::to($record->email)->send(new InstructorAccepted($password, $record->name_en, $record->email));
                 }),
                 Action::make('reject')
-                ->label('Reject')
+                ->label(__('filament/forms/FormsInstructors.reject'))
                 ->icon('heroicon-o-x-circle')
                 ->color('danger')
                 ->requiresConfirmation()

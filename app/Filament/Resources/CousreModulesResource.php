@@ -23,8 +23,20 @@ class CousreModulesResource extends Resource
     protected static ?string $model =CoursesModulesM::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard';
-    protected static ?string $navigationGroup = "Courses";
-    protected static ?string $modelLabel = "CourseModules";
+    public static function getNavigationGroup(): ?string
+    {
+        return __('filament/courses/CoursesModules.group');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('filament/courses/CoursesModules.model');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament/courses/CoursesModules.plural');
+    }
     static public function GenerateNewCode()
     {
         $code = Str::random(5);
@@ -41,13 +53,13 @@ class CousreModulesResource extends Resource
                 Hidden::make('code')
                 ->default(fn () => self::GenerateNewCode()),
                 TextInput::make('title.en')
-                ->label('Title (English)')
+                ->label(__('filament/courses/CoursesModules.title') . ' (English)')
                 ->required(),
                 TextInput::make('title.ar')
-                ->label('Title (Arabic)')
+                ->label(__('filament/courses/CoursesModules.title') . ' (Arabic)')
                 ->required(),
                 Select::make('course_id')
-                ->label('Course')
+                ->label(__('filament/courses/CoursesModules.course'))
                 ->required()
                 ->relationship('course', 'name')
                 ->getOptionLabelFromRecordUsing(fn ($record) => $record->name['en'] ?? ''),
@@ -59,8 +71,8 @@ class CousreModulesResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id'),
-                TextColumn::make('title.en'),
-                TextColumn::make('course.name.en'),
+                TextColumn::make('title.en')->label(__('filament/courses/CoursesModules.title') . ' (English)'),
+                TextColumn::make('course.name.en')->label(__('filament/courses/CoursesModules.course') . ' (English)'),
             ])
             ->filters([
                 //

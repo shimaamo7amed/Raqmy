@@ -25,14 +25,19 @@ class CousreModulesItemResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document';
     // protected static ?string $navigationGroup = "Courses";
     // protected static ?string $modelLabel = "CourseModuleItems";
-     public static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): ?string
     {
-        return __('filament/courses.group');
+        return __('filament/courses/courseModuleItems.group');
     }
 
     public static function getModelLabel(): string
     {
-        return __('filament/courses.modelItem');
+        return __('filament/courses/courseModuleItems.model');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament/courses/courseModuleItems.plural');
     }
     static public function GenerateNewCode()
     {
@@ -52,13 +57,14 @@ class CousreModulesItemResource extends Resource
                 Hidden::make('code')
                 ->default(fn () => self::GenerateNewCode()),
                 Textarea::make('content.en')
-                ->label('Content (English)')
+                ->label(__('filament/courses/courseModuleItems.content') . ' (English)')
+
                 ->required(),
                 Textarea::make('content.ar')
-                ->label('Content (Arabic)')
+                ->label(__('filament/courses/courseModuleItems.content') . ' (Arabic)')
                 ->required(),
             Select::make('module_id')
-                ->label('Module')
+                ->label(__('filament/courses/courseModuleItems.module'))
                 ->required()
                 ->options(function () {
                     return CoursesCoursesM::with('modules')->get()->mapWithKeys(function ($course) {
@@ -80,8 +86,8 @@ class CousreModulesItemResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id'),
-                TextColumn::make('content.en'),
-                TextColumn::make('module.title.en')
+                TextColumn::make('content.en')->label(__('filament/courses/courseModuleItems.content') . ' (English)'),
+                TextColumn::make('module.title.en')->label(__('filament/courses/courseModuleItems.module') . ' (English)'),
             ])
             ->filters([
                 //
@@ -89,6 +95,7 @@ class CousreModulesItemResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+            Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

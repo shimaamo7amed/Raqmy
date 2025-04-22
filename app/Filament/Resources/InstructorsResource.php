@@ -27,7 +27,16 @@ class InstructorsResource extends Resource
     protected static ?string $model = UsersUsersM::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
-    protected static ?string $modelLabel = "Instructors";
+
+    public static function getModelLabel(): string
+    {
+        return __('filament/forms/FormsInstructors.model_label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament/forms/FormsInstructors.plural_label');
+    }
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
@@ -43,44 +52,44 @@ class InstructorsResource extends Resource
                     ->schema([
                         Grid::make(2)->schema([
                         TextInput::make('name_en')
-                        ->label('Name (English)')
+                        ->label(__('filament/forms/FormsInstructors.name_en'))
                         ->required(),
                         TextInput::make('name_ar')
-                        ->label('Name (Arabic)')
+                        ->label(__('filament/forms/FormsInstructors.name_ar'))
                         ->required(),
                         Textarea::make('desc.en')
-                            ->label('Description (English)')
+                            ->label(__('filament/forms/FormsInstructors.desc_en'))
                             ->required(),
                         Textarea::make('desc.ar')
-                            ->label('Description (Arabic)')
+                            ->label(__('filament/forms/FormsInstructors.desc_ar'))
                             ->required(),
                         TextInput::make('email')
-                        ->label('Instructor Email')
+                        ->label(__('filament/forms/FormsInstructors.email'))
                         ->required()
                         ->readonly(),
                         TextInput::make('phone')
-                        ->label('Instructor Phone')
+                        ->label(__('filament/forms/FormsInstructors.phone'))
                         ->required()
                         ->readonly(),
                         TextInput::make('experince')
-                            ->label('Instructor Experince')
+                            ->label(__('filament/forms/FormsInstructors.experince'))
                             ->required(),
                         TextInput::make('facebook')
-                            ->label('facebook'),
+                            ->label(__('filament/forms/FormsInstructors.facebook')),
                         TextInput::make('linkedIn')
-                            ->label('linkedIn'),
+                            ->label(__('filament/forms/FormsInstructors.linkedIn')),
                         TextInput::make('website')
-                            ->label('Website'),
+                            ->label(__('filament/forms/FormsInstructors.website')),
                             FileUpload::make('image')
                             ->required()
-                            ->label("Image")
+                            ->label(__('filament/forms/FormsInstructors.image'))
                             ->disk('public')
                             ->imageEditor()
                             ->imageEditorMode(2)
                             ->downloadable()
                             ->directory('InstructorImages'),
                         FileUpload::make('cv')
-                            ->label("CV")
+                            ->label(__('filament/forms/FormsInstructors.cv'))
                             ->visibility('public')
                             ->downloadable()
                             ->openable()
@@ -95,11 +104,11 @@ class InstructorsResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id'),
-                TextColumn::make('name_en'),
-                TextColumn::make('email'),
-                TextColumn::make('phone'),
-                TextColumn::make('experince'),
-                ImageColumn::make("image"),
+                TextColumn::make('name_en')->label(__('filament/forms/FormsInstructors.name_en')),
+                TextColumn::make('email')->label(__('filament/forms/FormsInstructors.email')),
+                TextColumn::make('phone')->label(__('filament/forms/FormsInstructors.phone')),
+                TextColumn::make('experince')->label(__('filament/forms/FormsInstructors.experince')),
+                ImageColumn::make("image")->label(__('filament/forms/FormsInstructors.image')),
             ])
             ->filters([
                 //
@@ -107,6 +116,7 @@ class InstructorsResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

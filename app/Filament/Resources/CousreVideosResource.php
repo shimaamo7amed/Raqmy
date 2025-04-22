@@ -24,8 +24,20 @@ class CousreVideosResource extends Resource
 {
     protected static ?string $model = CoursesVideosM::class;
     protected static ?string $navigationIcon = 'heroicon-o-cloud-arrow-up';
-    protected static ?string $navigationGroup = "Courses";
-    protected static ?string $modelLabel = "CourseVideos";
+    public static function getNavigationGroup(): ?string
+    {
+        return __('filament/courses/courseVideos.group');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('filament/courses/courseVideos.model');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament/courses/courseVideos.plural');
+    }
     static public function GenerateNewCode()
     {
         $code = Str::random(5);
@@ -43,7 +55,7 @@ class CousreVideosResource extends Resource
                 Hidden::make('code')
                 ->default(fn () => self::GenerateNewCode()),
                 FileUpload::make('video')
-                ->label('Upload Video')
+                ->label(__('filament/courses/courseVideos.upload_video'))
                 ->disk('public')  // Specify disk (you can use 'public' or others)
                 ->directory('videos')  // Specify the directory inside storage
                 ->acceptedFileTypes(['video/mp4', 'video/avi', 'video/mkv']) // Limit file types to videos
@@ -51,13 +63,13 @@ class CousreVideosResource extends Resource
                 // ->multiple()
                 ->columnSpan(1),  // Optional, to adjust the layout
            Select::make('course_id')
-                ->label('Course')
+                ->label(__('filament/courses/courseVideos.course'))
                 ->required()
                 ->relationship('course', 'name')
                 ->getOptionLabelFromRecordUsing(fn ($record) => $record->name['en'] ?? '')
                 ->reactive(),
             Select::make('module_item_id')
-                ->label('Module Item')
+                ->label(__('filament/courses/courseVideos.module_item'))
                 ->required()
                 ->options(function (callable $get) {
                     $courseId = $get('course_id');
@@ -76,8 +88,8 @@ class CousreVideosResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id'),
-                TextColumn::make('moduleItem.content.en'),
-                TextColumn::make('video')
+                TextColumn::make('moduleItem.content.en')->label(__('filament/courses/courseVideos.module_item')),
+                TextColumn::make('video')->label(__('filament/courses/courseVideos.video'))
                 ->formatStateUsing(function ($state) {
                 return '<video width="320" height="240" controls>
                 <source src="'.asset('storage/'.$state).'" type="video/mp4">

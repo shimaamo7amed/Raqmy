@@ -24,8 +24,20 @@ class SubCategoriesResource extends Resource
     protected static ?string $model = CategoriesSubCategoriesM::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-chart-pie';
-    protected static ?string $navigationGroup = "Categories";
-    protected static ?string $modelLabel = "Sub-Categories";
+    public static function getNavigationGroup(): ?string
+    {
+        return __('filament/Categories/Categories.group');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('filament/Categories/SubCategories.model');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament/Categories/SubCategories.plural');
+    }
 
       static public function GenerateNewCode()
     {
@@ -44,13 +56,13 @@ class SubCategoriesResource extends Resource
                         Hidden::make('code')
                         ->default(fn () => self::GenerateNewCode()),
                         TextInput::make('name.en')
-                            ->label('Name (English)')
+                            ->label(__('filament/Categories/SubCategories.name_en'))
                             ->required(),
                         TextInput::make('name.ar')
-                            ->label('Name (Arabic)')
+                            ->label(__('filament/Categories/SubCategories.name_ar'))
                             ->required(),
                         Select::make('category_id')
-                            ->label('category')
+                            ->label(__('filament/Categories/SubCategories.category'))
                             ->required()
                             ->relationship('category', 'name')
                             ->getOptionLabelFromRecordUsing(fn ($record) => $record->name['en'] ?? ''),
@@ -65,9 +77,9 @@ class SubCategoriesResource extends Resource
                 TextColumn::make('id'),
                 TextColumn::make('code'),
                 TextColumn::make('name.en')
-                ->label('SubCategory Name'),
+                ->label(__('filament/Categories/SubCategories.name_en')),
                 TextColumn::make('category.name.en')
-                ->label('Category Name'),
+                ->label(__('filament/Categories/SubCategories.category')),
             ])
             ->filters([
                 //
@@ -75,6 +87,7 @@ class SubCategoriesResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

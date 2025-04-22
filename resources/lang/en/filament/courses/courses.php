@@ -3,7 +3,7 @@
 return [
     'group' => 'Courses',
     'model' => 'Courses',
-    'modelItem' => 'CourseModuleItems',
+    'plural' => 'Courses',
     'create' => 'Create Course',
     'edit' => 'Edit Course',
     'delete' => 'Delete Course',

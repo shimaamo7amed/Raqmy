@@ -26,7 +26,17 @@ class ProgramsResource extends Resource
     protected static ?string $model =ProgramsProgramsM::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-folder-arrow-down';
-      protected static ?string $modelLabel = "Programs";
+
+
+    public static function getModelLabel(): string
+    {
+        return __('filament/Programs.model');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament/Programs.plural');
+    }
       static public function GenerateNewCode()
     {
         $code = \Illuminate\Support\Str::random(5);
@@ -44,54 +54,55 @@ class ProgramsResource extends Resource
                 Hidden::make('code')
                 ->default(fn () => self::GenerateNewCode()),
                 TextInput::make('title.en')
-                ->label('Title (English)')
+                ->label(__('filament/Programs.name_en'))
                 ->required(),
                 TextInput::make('title.ar')
-                ->label('Title (Arabic)')
+                ->label(__('filament/Programs.name_ar'))
                 ->required(),
                 Textarea::make('desc.en')
-                ->label('Descrebtion(English)')
+                ->label(__('filament/Programs.description_en'))
                 ->required(),
                 Textarea::make('desc.ar')
-                ->label('Descrebtion (Arabic)')
+                ->label(__('filament/Programs.description_ar'))
                 ->required(),
                 TextInput::make('total_price')
-                ->label('Price')
+                ->label(__('filament/Programs.price'))
                 ->numeric()
                 ->required()
                 ->suffix('EGP')
                 ->live(),
                 TextInput::make('discount')
+                ->label(__('filament/Programs.discount'))
                 ->numeric()
                 ->default(0)
                 ->suffix('%'),
                 TextInput::make('courses_hour')
-                ->label('Course hour')
+                ->label(__('filament/Programs.course_hour'))
                 ->required(),
                 TextInput::make('courses_number')
-                ->label('Course Numbers')
+                ->label(__('filament/Programs.course_number'))
                 ->required(),
                 Repeater::make('goals')
-                ->label('Course Goals')
+                ->label(__('filament/Programs.goal'))
                     ->schema([
                         TextInput::make('en')
-                        ->label('Goal (English)')
+                        ->label(__('filament/Programs.goal_en'))
                         ->required(),
                         TextInput::make('ar')
-                        ->label('Goal (Arabic)')
+                        ->label(__('filament/Programs.goal_ar'))
                         ->required(),
                         ])
                         ->columns(2)
                         ->minItems(1)
                         ->addActionLabel('Add New Goal'),
                 Repeater::make('career_path')
-                ->label('Course Career Path')
+                ->label(__('filament/Programs.career_path'))
                     ->schema([
                         TextInput::make('en')
-                        ->label('CareerPath (English)')
+                        ->label(__('filament/Programs.career_path_en'))
                         ->required(),
                         TextInput::make('ar')
-                        ->label('CareerPath (Arabic)')
+                        ->label(__('filament/Programs.career_path_ar'))
                         ->required(),
                         ])
                         ->columns(2)
@@ -99,11 +110,11 @@ class ProgramsResource extends Resource
                         ->addActionLabel('Add New Career Path'),
                 FileUpload::make('courses_image')
                 ->required()
-                ->label("Image")
+                ->label(__('filament/Programs.image'))
                 ->disk('public')
                 ->directory('ProgramsImage'),
                 FileUpload::make('courses_video')
-                ->label('Upload Video')
+                ->label(__('filament/Programs.video'))
                 ->disk('public')  // Specify disk (you can use 'public' or others)
                 ->directory('Programsvideos')  // Specify the directory inside storage
                 ->acceptedFileTypes(['video/mp4', 'video/avi', 'video/mkv']) // Limit file types to videos
@@ -111,7 +122,7 @@ class ProgramsResource extends Resource
                 ->columnSpan(1),
                 Select::make('course_id')
                 ->required()
-                ->label("courses")
+                ->label(__('filament/Programs.course'))
                 ->multiple()
                 ->searchable()
                 ->relationship('courses', 'name')
@@ -129,21 +140,25 @@ class ProgramsResource extends Resource
             ->columns([
                 TextColumn::make('id')
                 ->label('ID'),
-                TextColumn::make('title.en'),
+                TextColumn::make('title.en')
+                ->label(__('filament/Programs.name_en')),
                 TextColumn::make('total_price')
+                ->label(__('filament/Programs.price'))
                   ->money('EGP')
                 ->sortable(),
                 TextColumn::make('price_after')
+                ->label(__('filament/Programs.price_after'))
                   ->money('EGP')
                 ->sortable(),
                 TextColumn::make('courses_video')
+                ->label(__('filament/Programs.video'))
                 ->formatStateUsing(function ($state) {
                 return '<video width="320" height="240" controls>
                 <source src="'.asset('storage/'.$state).'" type="video/mp4">
                 </video>';
                 })
                 ->html(),
-                
+
             ])
             ->filters([
                 //

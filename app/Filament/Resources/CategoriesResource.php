@@ -20,8 +20,20 @@ class CategoriesResource extends Resource
 {
     protected static ?string $model =CategoriesCategoriesM::class;
      protected static ?string $navigationIcon = 'heroicon-o-circle-stack';
-    protected static ?string $navigationGroup = "Categories";
-    protected static ?string $modelLabel = "Course-Categories";
+    public static function getNavigationGroup(): ?string
+    {
+        return __('filament/Categories/Categories.group');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('filament/Categories/Categories.model');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament/Categories/Categories.plural');
+    }
     static public function GenerateNewCode()
     {
         $code = \Illuminate\Support\Str::random(5);
@@ -38,14 +50,14 @@ class CategoriesResource extends Resource
                Forms\Components\Hidden::make('code')
                         ->default(fn () => self::GenerateNewCode()),
                         Forms\Components\TextInput::make('name.en')
-                        ->label('Name (English)')
+                        ->label(__('filament/Categories/Categories.name_en'))
                         ->required(),
                         Forms\Components\TextInput::make('name.ar')
-                        ->label('Name (Arabic)')
+                        ->label(__('filament/Categories/Categories.name_ar'))
                         ->required(),
                         FileUpload::make('image')
                         ->required()
-                        ->label("Image")
+                        ->label(__('filament/Categories/Categories.image'))
                         ->disk('public')
                         ->directory('CategoryImage'),
             ]);
@@ -57,8 +69,8 @@ class CategoriesResource extends Resource
             ->columns([
                 TextColumn::make('id'),
                 TextColumn::make('code'),
-                TextColumn::make('name.en'),
-                ImageColumn::make("image"),
+                TextColumn::make('name.en')->label(__('filament/Categories/Categories.name_en')),
+                ImageColumn::make("image")->label(__('filament/Categories/Categories.image')),
 
             ])
             ->filters([

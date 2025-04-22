@@ -20,24 +20,36 @@ class FAQResource extends Resource
     protected static ?string $model = FormsFAQM::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-queue-list';
-    protected static ?string $navigationGroup = "Forms";
-    protected static ?string $modelLabel = "Website-FAQ";
+    public static function getNavigationGroup(): ?string
+    {
+        return __('filament/forms/FormFAQ.group');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('filament/forms/FormFAQ.model');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament/forms/FormFAQ.plural');
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('question.en')
-                    ->label('Question (English)')
-                    ->required(),
+                ->label(__('filament/forms/FormFAQ.question') . ' (English)')
+                ->required(),
                 TextInput::make('question.ar')
-                    ->label('Question (Arabic)')
-                    ->required(),
+                ->label(__('filament/forms/FormFAQ.question') . ' (Arabic)')
+                ->required(),
                 Textarea::make('answer.en')
-                    ->label('Answer (English)')
+                ->label(__('filament/forms/FormFAQ.answer') . ' (English)')
                     ->required(),
                 Textarea::make('answer.ar')
-                    ->label('Answer (Arabic)')
+                ->label(__('filament/forms/FormFAQ.answer') . ' (Arabic)')
                     ->required(),
             ]);
     }
@@ -47,10 +59,10 @@ class FAQResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id'),
-                TextColumn::make('question.en'),
-                TextColumn::make('question.ar'),
-                TextColumn::make('answer.en'),
-                TextColumn::make('answer.ar'),
+                TextColumn::make('question.en')->label(__('filament/forms/FormFAQ.question') . ' (English)'),
+                TextColumn::make('question.ar')->label(__('filament/forms/FormFAQ.question') . ' (Arabic)'),
+                TextColumn::make('answer.en')->label(__('filament/forms/FormFAQ.answer') . ' (English)'),
+                TextColumn::make('answer.ar')->label(__('filament/forms/FormFAQ.answer') . ' (Arabic)'),
             ])
             ->filters([
                 //
