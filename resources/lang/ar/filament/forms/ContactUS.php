@@ -1,5 +1,4 @@
 <?php
-
 return [
     'model' => 'الرسائل',
     'plural' => 'الرسائل',
