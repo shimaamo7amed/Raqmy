@@ -29,6 +29,8 @@ class AuthServices
   public static function Register(array $array)
   {
     // dd($array);
+    
+    $array['role_id'] = 1;
     $user = UsersUsersM::create($array);
     // dd($user);
     Mail::to($user->email)->send(new VerifyCodeEmail($user->otp, $user->name, $user->email));

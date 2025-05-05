@@ -60,13 +60,15 @@ class CoursesServices
     {
         // dd($array);
         $existingRate = CourseRatesM::where('course_id', $array['course_id'])
-        ->where('user_id', $array['user_id'])
+        ->where('user_id', auth()->user()->id)
         ->first();
-
         if ($existingRate)
         {
-            $existingRate->update(['rates' => $array['rates']]);
-            return $existingRate;
+            $existingRate->update([
+            'rates' => $array['rates'] ?? null,
+            'review' => $array['review'] ?? null,
+        ]);
+        return $existingRate;
         } else
         {
             $courseRates = CourseRatesM::create($array);
@@ -76,6 +78,26 @@ class CoursesServices
 
     }
 
+    public static function  UpdateCourseRates($id,array $array)
+    {
+       // dd($array);
+        $courseRates = CourseRatesM::findorFail($id);
+        // dd($courseRates['course_id']);
+        // $user=auth()->user()->id;
+        // dd($user);
+        if ($courseRates['course_id']!=auth()->user()->id) {
+            throw new \Exception('Unauthorized');
+        }
+        if ($courseRates['course_id'] == $array['course_id']) {
+        $courseRates->update([
+            'rates' => $array['rates'] ?? null,
+            'review' => $array['review'] ?? null,
+        ]);
+        return $courseRates;
+        }
+        return null;
+
+    }
 
     public static function search(array $array, $limit = 10)
     {
@@ -106,5 +128,3 @@ class CoursesServices
 
 
 }
-
-

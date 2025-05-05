@@ -107,6 +107,7 @@ class authintication extends BaseController
     {
         try {
             $user = AuthServices::Login($data->validated());
+            // dd($user);
             if ($user === 'device_error')
             {
                 return SystemApiResponseServices::ReturnFailed(

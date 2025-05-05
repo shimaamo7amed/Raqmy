@@ -20,7 +20,7 @@ Route::name("api.app.")
         Route::get('All', 'GetAll')->name("GetAll");
         Route::get('{code}', 'GetByCode')->name("Details");
         });
-        
+
    // Courses routes
         Route::name("Courses.")
         ->prefix("Courses/")
@@ -84,6 +84,9 @@ Route::name("api.auth.")
         ->group(function () {
             Route::get('myCourses', 'myCoursesInstructors')->name("myCoursesInstructors");
         });
+        Route::name("courses.")
+        ->controller(courseRates::class)
+        ->group(function () {
+            Route::post('updateRate/{id}', 'UpdateCourseRates')->name("UpdateCourseRates");
+        });
     });
-
-

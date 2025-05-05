@@ -27,7 +27,7 @@ class CountrySeeder extends Seeder
                 "label_ar" => "الإمارات العربية المتحدة",
                 "value_en" => "UAE",
                 "value_ar" => "الإمارات العربية المتحدة",
-            ]
+            ],
         ];
         DB::table('countries_countries')->insert($countries);
       
