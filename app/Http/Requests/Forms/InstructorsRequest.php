@@ -23,6 +23,7 @@ class InstructorsRequest extends FormRequest
         "facebook" => "required|string|regex:/^https:\/\/www\.facebook\.com\/[a-zA-Z0-9\.\-_]+\/?$/",
         "message"=>"required",
         'cv' => 'required|file|mimes:pdf,doc,docx|max:2048',
+        "image" => "required|image|mimes:jpeg,png,jpg,gif,svg",
 
         ];
     }

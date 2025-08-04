@@ -12,7 +12,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class AdminUsersAdminM extends Authenticatable
 {
     use Notifiable;
-    // public $timestamps = false;
+    // public $timestamps = false ;
     protected $table = "admin_users_admin";
     protected $fillable = [
         'code',

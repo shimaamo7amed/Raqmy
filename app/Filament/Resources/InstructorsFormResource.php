@@ -17,10 +17,11 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\Forms\FormsInstructorsM;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
-use App\Models\Instructors\InstructorsInstructorsM;
 
+use App\Models\Instructors\InstructorsInstructorsM;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\InstructorsFormResource\Pages;
 use App\Filament\Resources\InstructorsFormResource\RelationManagers;
@@ -79,7 +80,15 @@ class InstructorsFormResource extends Resource
                 ->visibility('public')
                 ->downloadable()
                 ->openable()
-                ->preserveFilenames()
+                ->preserveFilenames(),
+                FileUpload::make('image')
+                ->required()
+                            ->label(__('filament/forms/FormsInstructors.image'))
+                            ->disk('public')
+                            ->imageEditor()
+                            ->imageEditorMode(2)
+                            ->downloadable()
+                            ->directory('InstructorImages'),
             ]);
     }
 
@@ -94,13 +103,15 @@ class InstructorsFormResource extends Resource
                 TextColumn::make('phone')->label(__('filament/forms/FormsInstructors.phone')),
                 TextColumn::make('experince')->label(__('filament/forms/FormsInstructors.experince')),
                 TextColumn::make('message')->label(__('filament/forms/FormsInstructors.message')),
+                ImageColumn::make("image")->label(__('filament/forms/FormsInstructors.image')),
+
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                  Action::make('accept')
+                Action::make('accept')
                 ->label(__('filament/forms/FormsInstructors.accept'))
                 ->icon('heroicon-o-check-circle')
                 ->requiresConfirmation()
@@ -116,10 +127,11 @@ class InstructorsFormResource extends Resource
                         'linkedIn' => $record->linkedIn,
                         'facebook' => $record->facebook,
                         'cv' => $record->cv,
+                        'image' => $record->image,
                         'password' => Hash::make($password),
                         'role_id' =>2,
                     ]);
-                    $record->delete();
+                    $record->save();
                 Mail::to($record->email)->send(new InstructorAccepted($password, $record->name_en, $record->email));
                 }),
                 Action::make('reject')

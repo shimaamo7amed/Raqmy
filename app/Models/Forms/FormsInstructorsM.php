@@ -16,7 +16,8 @@ class FormsInstructorsM  extends Model
     'message',
     'linkedIn',
     'experince',
-    'cv'
+    'cv',
+    'image'
     ];
     protected $hidden = [
         'id',

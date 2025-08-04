@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('experince');
             $table->string('linkedIn');
             $table->string('cv');
+            $table->string('image');
             $table->longText('message');
             $table->timestamps();
             $table->softDeletes();
