@@ -31,7 +31,7 @@ class InstructorsInstructorsM extends Model
     protected $hidden = [
         'id',
     ];
-     protected $casts = [
+    protected $casts = [
         'desc' => 'array',
     ];
        public function courses()

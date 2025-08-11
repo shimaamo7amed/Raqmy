@@ -10,30 +10,24 @@ use App\Services\system\SystemApiResponseServices;
 
 class InstructorsForm extends Controller
 {
-    public function Instructors(InstructorsRequest $data)
+    public function Instructors(InstructorsRequest $request)
     {
-       try {
-      $formData=FormsInstructorsServices::InstructorsForm($data->validated());
-                // dd($formData);
-                if ($formData) {
-                        return  SystemApiResponseServices::ReturnSuccess(
-                            [],
-                            __("Thanks,The Admin will contact you soon.."),
-                            null
-                        );
-                    } else {
-                        return  SystemApiResponseServices::ReturnFailed(
-                            [],
-                            __(""),
-                            null
-                        );
-                    }
-            }catch (\Throwable $th) {
-                return SystemApiResponseServices::ReturnError(
-                        9800,
-                        null,
-                        $th->getMessage(),
-                    );
-            }
+        try {
+            $formData = FormsInstructorsServices::InstructorsForm($request->validated());
+
+            return SystemApiResponseServices::ReturnSuccess(
+                [],
+                __("Thanks, The Admin will contact you soon.."),
+                null
+            );
+
+        } catch (\Throwable $th) {
+            return SystemApiResponseServices::ReturnError(
+                9800,
+                null,
+                $th->getMessage(),
+            );
+        }
     }
+
 }
