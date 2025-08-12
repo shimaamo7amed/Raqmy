@@ -29,8 +29,8 @@ class RaqmyAdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
-            ->id('raqmyAdmin')
-            ->path('raqmyAdmin')
+            ->id('cognify-e-learingAdmin')
+            ->path('cognify-e-learingAdmin')
             ->login(\App\Filament\Pages\Auth\Login::class)
             ->colors([
                 'primary' => Color::Amber,

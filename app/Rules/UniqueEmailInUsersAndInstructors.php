@@ -3,8 +3,9 @@
   
 namespace App\Rules;
 
-use App\Models\FormsInstructorsM;
+
 use App\Models\Users\UsersUsersM;
+use App\Models\Forms\FormsInstructorsM;
 use Illuminate\Contracts\Validation\Rule;
 
 class UniqueEmailInUsersAndInstructors implements Rule

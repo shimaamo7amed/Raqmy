@@ -16,13 +16,11 @@ return new class extends Migration
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
             $table->id();
-            $table->string('code')->unique();
-            $table->integer('quantity');
-            $table->decimal('price');
-            $table->boolean('status')->default(false);
-            $table->foreignId('user_id')->references('id')->on('users_users')->constrained()->cascadeOnDelete();
-            $table->foreignId('course_id')->references('id')->on('courses_courses')->constrained()->cascadeOnDelete();
-            $table->foreignId('order_id')->references('id')->on('orders_orders')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('users_users')->cascadeOnDelete();
+            $table->enum('status', ['active', 'pending', 'ordered'])->default('pending');
+            $table->string('coupon_code')->nullable();
+            $table->decimal('discount_amount', 10, 2)->default(0);
+            $table->decimal('total_amount', 10, 2)->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

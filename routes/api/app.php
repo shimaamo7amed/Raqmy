@@ -7,6 +7,7 @@ use App\Http\Controllers\Courses\courseRates;
 use App\Http\Controllers\Categories\categories;
 use App\Http\Controllers\Forms\InstructorsForm;
 use App\Http\Controllers\Instructors\instructors;
+use App\Http\Controllers\Courses\Cart\CartController;
 
 // all routes without auth
 Route::name("api.app.")
@@ -21,7 +22,7 @@ Route::name("api.app.")
         Route::get('{code}', 'GetByCode')->name("Details");
         });
 
-   // Courses routes
+        // Courses routes
         Route::name("Courses.")
         ->prefix("Courses/")
         ->controller(courses::class)
@@ -30,14 +31,14 @@ Route::name("api.app.")
         Route::get('{code}', 'GetByCode')->name("GetByCode");
         Route::post('search','search')->name("search");
         });
-// Programs routes
+        // Programs routes
         Route::name("Programs.")
         ->prefix("Programs/")
         ->controller(Programs::class)
         ->group(function () {
         Route::get('All', 'GetAll')->name("GetAll");
         Route::get('{code}', 'GetByCode')->name("GetByCode");
-         Route::get('subcategor', 'subcategory')->name("subcategory");
+        Route::get('subcategor', 'subcategory')->name("subcategory");
 
         });
         // Categories routes
@@ -49,16 +50,16 @@ Route::name("api.app.")
         });
 
           //Forms routes
-    Route::name("Forms.")
-    ->prefix("form/")
-    ->group(function () {
-        Route::controller(ContactUS::class)->group(function () {
-            Route::post('contactUs', 'ContactUS')->name("ContactUS");
+        Route::name("Forms.")
+            ->prefix("form/")
+            ->group(function () {
+            Route::controller(ContactUS::class)->group(function () {
+                Route::post('contactUs', 'ContactUS')->name("ContactUS");
+            });
+            Route::controller(InstructorsForm::class)->group(function () {
+                Route::post('Instructors', 'Instructors')->name("Instructors");
+            });
         });
-        Route::controller(InstructorsForm::class)->group(function () {
-            Route::post('Instructors', 'Instructors')->name("Instructors");
-        });
-    });
 
 });
 
@@ -76,7 +77,7 @@ Route::name("api.app.")
 
 
 
-Route::name("api.auth.")
+    Route::name("api.auth.")
     ->middleware(['api_with_auth'])
     ->group(function () {
         Route::name("instructors.")
@@ -89,4 +90,14 @@ Route::name("api.auth.")
         ->group(function () {
             Route::post('updateRate/{id}', 'UpdateCourseRates')->name("UpdateCourseRates");
         });
+        // cart routes
+        Route::name("cart.")
+        ->prefix("student/cart/")
+        ->controller(CartController::class)
+        ->group(function () {
+            Route::post('addToCart', 'addToCart')->name("addToCart");
+            Route::get('/', 'getCart')->name("getCart");
+            Route::post('/{course_id?}', 'removeFromCart')->name("removeFromCart");
+        });
     });
+
