@@ -8,10 +8,13 @@ use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Filament\Resources\Resource;
 use App\Models\Users\UsersUsersM;
+use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
 use App\Models\Courses\CoursesCoursesM;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
@@ -19,9 +22,11 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Categories\CategoriesCategoriesM;
+
 use App\Filament\Resources\CoursesResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CoursesResource\RelationManagers;
+
 
 class CoursesResource extends Resource
 {
@@ -53,128 +58,317 @@ class CoursesResource extends Resource
             return $code;
         }
     }
+    // public static function form(Form $form): Form
+    // {
+    //     return $form
+    //         ->schema([
+    //             Hidden::make('code')
+    //                 ->default(fn() => self::GenerateNewCode()),
+    //             TextInput::make('name.en')
+    //                 ->label(__('filament/courses/courses.name') . ' (English)')
+    //                 ->required(),
+    //             TextInput::make('name.ar')
+    //                 ->label(__('filament/courses/courses.name') . ' (Arabic)')
+    //                 ->required(),
+    //             Textarea::make('desc.en')
+    //                 ->label(__('filament/courses/courses.description') . ' (English)')
+    //                 ->required(),
+    //             Textarea::make('desc.ar')
+    //                 ->label(__('filament/courses/courses.description') . ' (Arabic)')
+    //                 ->required(),
+    //             TextInput::make('notes.en')
+    //                 ->label(__('filament/courses/courses.notes') . ' (English)')
+    //                 ->required(),
+    //             TextInput::make('notes.ar')
+    //                 ->label(__('filament/courses/courses.notes') . ' (Arabic)')
+    //                 ->required(),
+    //             TextInput::make('price')
+    //                 ->label(__('filament/courses/courses.price'))
+    //                 ->numeric()
+    //                 ->required()
+    //                 ->suffix('EGP')
+    //                 ->live(),
+    //             TextInput::make('discount')
+    //                 ->numeric()
+    //                 ->default(0)
+    //                 ->label(__('filament/courses/courses.discount'))
+    //                 ->suffix('%'),
+    //             Select::make('status')
+    //                 ->label(__('filament/courses/courses.status'))
+    //                 ->required()
+    //                 ->options([
+    //                     'paid' => 'Paid',
+    //                     'free' => 'Free',
+    //                 ]),
+    //             Select::make('delivary_method')
+    //                 ->label(__('filament/courses/courses.delivery_method'))
+    //                 ->required()
+    //                 ->options([
+    //                     'live' => 'Live',
+    //                     'recorded' => 'Recorded',
+    //                 ]),
+    //             Select::make('category_id')
+    //                 ->label(__('filament/courses/courses.category'))
+    //                 ->required()
+    //                 ->relationship('category', 'name')
+    //                 ->getOptionLabelFromRecordUsing(fn($record) => $record->name['en'] ?? '')
+    //                 ->reactive(),
+    //             Select::make('subcategory_id')
+    //                 ->label(__('filament/courses/courses.subcategory'))
+    //                 ->required()
+    //                 ->options(function (callable $get) {
+    //                     $categoryId = $get('category_id');
+    //                     if (!$categoryId) {
+    //                         return [];
+    //                     }
+    //                     $category = CategoriesCategoriesM::with('subCategories')->find($categoryId);
+    //                     return $category?->subCategories
+    //                         ->pluck('name.en', 'id')
+    //                         ->toArray();
+    //                 })
+    //                 ->reactive()
+    //                 ->disabled(fn(callable $get) => !$get('category_id')),
+
+    //             Select::make('instructors_id')
+    //                 ->label(__('filament/courses/courses.instructor'))
+    //                 ->options(function () {
+    //                     return UsersUsersM::whereHas('role', function ($q) {
+    //                         $q->where('id', '2');
+    //                     })->pluck('name_en', 'id');
+    //                 })
+    //                 ->searchable()
+    //                 ->required(),
+    //             FileUpload::make('image')
+    //                 ->required()
+    //                 ->label(__('filament/courses/courses.image'))
+    //                 ->disk('public')
+    //                 ->directory('CoursesImage'),
+    //             FileUpload::make('main_video')
+    //                 ->label(__('filament/courses/courses.video'))
+    //                 ->disk('public')
+    //                 ->directory('videos')
+    //                 ->acceptedFileTypes(['video/mp4', 'video/avi', 'video/mkv'])
+    //                 ->maxSize(10240)
+    //                 ->columnSpan(1),
+    //             TextInput::make("video_time")
+    //                 ->label(__('filament/courses/courses.video_time')),
+    //             Repeater::make('goals')
+    //                 ->label(__('filament/courses/courses.goals'))
+    //                 ->schema([
+    //                     TextInput::make('en')
+    //                         ->label(__('filament/courses/courses.goals') . ' (English)')
+    //                         ->required(),
+    //                     TextInput::make('ar')
+    //                         ->label(__('filament/courses/courses.goals') . ' (Arabic)')
+    //                         ->required(),
+    //                 ])
+    //                 ->columns(2)
+    //                 ->minItems(1)
+    //                 ->addActionLabel('Add New Goal'),
+    //             Repeater::make('users')
+    //                 ->label(__('filament/courses/courses.users'))
+    //                 ->schema([
+    //                     TextInput::make('en')
+    //                         ->label(__('filament/courses/courses.users') . ' (English)')
+    //                         ->required(),
+    //                     TextInput::make('ar')
+    //                         ->label(__('filament/courses/courses.users') . ' (Arabic)')
+    //                         ->required(),
+    //                 ])
+    //                 ->columns(2)
+    //                 ->minItems(1)
+    //                 ->addActionLabel('Add New User'),
+    //         ]);
+    // }
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Hidden::make('code')
-                    ->default(fn() => self::GenerateNewCode()),
-                TextInput::make('name.en')
-                    ->label(__('filament/courses/courses.name') . ' (English)')
-                    ->required(),
-                TextInput::make('name.ar')
-                    ->label(__('filament/courses/courses.name') . ' (Arabic)')
-                    ->required(),
-                Textarea::make('desc.en')
-                    ->label(__('filament/courses/courses.description') . ' (English)')
-                    ->required(),
-                Textarea::make('desc.ar')
-                    ->label(__('filament/courses/courses.description') . ' (Arabic)')
-                    ->required(),
-                TextInput::make('notes.en')
-                    ->label(__('filament/courses/courses.notes') . ' (English)')
-                    ->required(),
-                TextInput::make('notes.ar')
-                    ->label(__('filament/courses/courses.notes') . ' (Arabic)')
-                    ->required(),
-                TextInput::make('price')
-                    ->label(__('filament/courses/courses.price'))
-                    ->numeric()
-                    ->required()
-                    ->suffix('EGP')
-                    ->live(),
-                TextInput::make('discount')
-                    ->numeric()
-                    ->default(0)
-                    ->label(__('filament/courses/courses.discount'))
-                    ->suffix('%'),
-                Select::make('status')
-                    ->label(__('filament/courses/courses.status'))
-                    ->required()
-                    ->options([
-                        'paid' => 'Paid',
-                        'free' => 'Free',
-                    ]),
-                Select::make('delivary_method')
-                    ->label(__('filament/courses/courses.delivery_method'))
-                    ->required()
-                    ->options([
-                        'live' => 'Live',
-                        'recorded' => 'Recorded',
-                    ]),
-                Select::make('category_id')
-                    ->label(__('filament/courses/courses.category'))
-                    ->required()
-                    ->relationship('category', 'name')
-                    ->getOptionLabelFromRecordUsing(fn($record) => $record->name['en'] ?? '')
-                    ->reactive(),
-                Select::make('subcategory_id')
-                    ->label(__('filament/courses/courses.subcategory'))
-                    ->required()
-                    ->options(function (callable $get) {
-                        $categoryId = $get('category_id');
-                        if (!$categoryId) {
-                            return [];
-                        }
-                        $category = CategoriesCategoriesM::with('subCategories')->find($categoryId);
-                        return $category?->subCategories
-                            ->pluck('name.en', 'id')
-                            ->toArray();
-                    })
-                    ->reactive()
-                    ->disabled(fn(callable $get) => !$get('category_id')),
+        return $form->schema([
+            Tabs::make('Course Form')
+                ->tabs([
+                    Tabs\Tab::make(__('General Info'))->schema([
+                        Section::make(__('Basic Info'))->schema([
+                            Hidden::make('code')
+                                ->default(fn() => self::GenerateNewCode()),
 
-                Select::make('instructors_id')
-                    ->label(__('filament/courses/courses.instructor'))
-                    ->options(function () {
-                        return UsersUsersM::whereHas('role', function ($q) {
-                            $q->where('id', '2');
-                        })->pluck('name_en', 'id');
-                    })
-                    ->searchable()
-                    ->required(),
-                FileUpload::make('image')
-                    ->required()
-                    ->label(__('filament/courses/courses.image'))
-                    ->disk('public')
-                    ->directory('CoursesImage'),
-                FileUpload::make('main_video')
-                    ->label(__('filament/courses/courses.video'))
-                    ->disk('public')
-                    ->directory('videos')
-                    ->acceptedFileTypes(['video/mp4', 'video/avi', 'video/mkv'])
-                    ->maxSize(10240)
-                    ->columnSpan(1),
-                TextInput::make("video_time")
-                    ->label(__('filament/courses/courses.video_time')),
-                Repeater::make('goals')
-                    ->label(__('filament/courses/courses.goals'))
-                    ->schema([
-                        TextInput::make('en')
-                            ->label(__('filament/courses/courses.goals') . ' (English)')
-                            ->required(),
-                        TextInput::make('ar')
-                            ->label(__('filament/courses/courses.goals') . ' (Arabic)')
-                            ->required(),
-                    ])
-                    ->columns(2)
-                    ->minItems(1)
-                    ->addActionLabel('Add New Goal'),
-                Repeater::make('users')
-                    ->label(__('filament/courses/courses.users'))
-                    ->schema([
-                        TextInput::make('en')
-                            ->label(__('filament/courses/courses.users') . ' (English)')
-                            ->required(),
-                        TextInput::make('ar')
-                            ->label(__('filament/courses/courses.users') . ' (Arabic)')
-                            ->required(),
-                    ])
-                    ->columns(2)
-                    ->minItems(1)
-                    ->addActionLabel('Add New User'),
-            ]);
+                            TextInput::make('name.en')
+                                ->label(__('filament/courses/courses.name') . ' (English)')
+                                ->required(),
+
+                            TextInput::make('name.ar')
+                                ->label(__('filament/courses/courses.name') . ' (Arabic)')
+                                ->required(),
+
+                            Textarea::make('desc.en')
+                                ->label(__('filament/courses/courses.description') . ' (English)')
+                                ->required(),
+
+                            Textarea::make('desc.ar')
+                                ->label(__('filament/courses/courses.description') . ' (Arabic)')
+                                ->required(),
+                        ])->columns(2),
+
+                        Section::make(__('Notes'))->schema([
+                            TextInput::make('notes.en')
+                                ->label(__('filament/courses/courses.notes') . ' (English)')
+                                ->required(),
+
+                            TextInput::make('notes.ar')
+                                ->label(__('filament/courses/courses.notes') . ' (Arabic)')
+                                ->required(),
+                        ])->columns(2),
+                    ]),
+                    Tabs\Tab::make(__('Pricing'))->schema([
+                        Section::make(__('Pricing'))->schema([
+                            TextInput::make('price')
+                                ->label(__('filament/courses/courses.price'))
+                                ->numeric()
+                                ->required()
+                                ->suffix('EGP'),
+
+                            TextInput::make('discount')
+                                ->numeric()
+                                ->default(0)
+                                ->label(__('filament/courses/courses.discount'))
+                                ->suffix('%'),
+                        ])->columns(2),
+                    ]),
+                    Tabs\Tab::make(__('Classification'))->schema([
+                        Section::make(__('Status & Category'))->schema([
+                            Select::make('status')
+                                ->label(__('filament/courses/courses.status'))
+                                ->required()
+                                ->options([
+                                    'paid' => 'Paid',
+                                    'free' => 'Free',
+                                ]),
+
+                            Select::make('delivary_method')
+                                ->label(__('filament/courses/courses.delivery_method'))
+                                ->required()
+                                ->options([
+                                    'live' => 'Live',
+                                    'recorded' => 'Recorded',
+                                ]),
+
+                            Select::make('category_id')
+                                ->label(__('filament/courses/courses.category'))
+                                ->required()
+                                ->relationship('category', 'name')
+                                ->getOptionLabelFromRecordUsing(fn($record) => $record->name['en'] ?? '')
+                                ->reactive(),
+
+                            Select::make('subcategory_id')
+                                ->label(__('filament/courses/courses.subcategory'))
+                                ->required()
+                                ->options(function (callable $get) {
+                                    $categoryId = $get('category_id');
+                                    if (!$categoryId) {
+                                        return [];
+                                    }
+                                    $category = CategoriesCategoriesM::with('subCategories')->find($categoryId);
+                                    return $category?->subCategories
+                                        ->pluck('name.en', 'id')
+                                        ->toArray();
+                                })
+                                ->reactive()
+                                ->disabled(fn(callable $get) => !$get('category_id')),
+                        ])->columns(2),
+
+                        Section::make(__('Instructor'))->schema([
+                            Select::make('instructors_id')
+                                ->label(__('filament/courses/courses.instructor'))
+                                ->options(function () {
+                                    return UsersUsersM::whereHas('role', function ($q) {
+                                        $q->where('id', '2');
+                                    })->pluck('name_en', 'id');
+                                })
+                                ->searchable()
+                                ->required(),
+                        ]),
+                    ]),
+                    Tabs\Tab::make(__('Media'))->schema([
+                        Section::make(__('Media'))->schema([
+                            FileUpload::make('image')
+                                ->required()
+                                ->label(__('filament/courses/courses.image'))
+                                ->disk('public')
+                                ->directory('CoursesImage'),
+
+                            FileUpload::make('main_video')
+                                ->label(__('filament/courses/courses.video'))
+                                ->disk('public')
+                                ->directory('videos')
+                                ->acceptedFileTypes(['video/mp4', 'video/avi', 'video/mkv'])
+                                ->maxSize(10240),
+
+                            TextInput::make("video_time")
+                                ->label(__('filament/courses/courses.video_time')),
+                        ])->columns(2),
+                    ]),
+                    Tabs\Tab::make(__('Goals & Users'))->schema([
+                        Section::make(__('Goals'))->schema([
+                            Repeater::make('goals')
+                                ->label(__('filament/courses/courses.goals'))
+                                ->schema([
+                                    TextInput::make('en')
+                                        ->label(__('filament/courses/courses.goals') . ' (English)')
+                                        ->required(),
+                                    TextInput::make('ar')
+                                        ->label(__('filament/courses/courses.goals') . ' (Arabic)')
+                                        ->required(),
+                                ])
+                                ->columns(2)
+                                ->minItems(1)
+                                ->addActionLabel('Add New Goal'),
+                        ]),
+
+                        Section::make(__('Users'))->schema([
+                            Repeater::make('users')
+                                ->label(__('filament/courses/courses.users'))
+                                ->schema([
+                                    TextInput::make('en')
+                                        ->label(__('filament/courses/courses.users') . ' (English)')
+                                        ->required(),
+                                    TextInput::make('ar')
+                                        ->label(__('filament/courses/courses.users') . ' (Arabic)')
+                                        ->required(),
+                                ])
+                                ->columns(2)
+                                ->minItems(1)
+                                ->addActionLabel('Add New User'),
+                        ]),
+                    ]),
+                    Tabs\Tab::make(__('Modules'))->schema([
+                        Section::make(__('Course Modules'))->schema([
+                            Repeater::make('modules')
+                                ->relationship('modules')
+                                ->schema([
+                                    TextInput::make('title.en')->label('Module Title (EN)')->required(),
+                                    TextInput::make('title.ar')->label('Module Title (AR)')->required(),
+
+                                    Repeater::make('moduleItems')
+                                        ->relationship('moduleItem')
+                                        ->schema([
+                                            TextInput::make('title.en')->label('Item Title (EN)')->required(),
+                                            TextInput::make('title.ar')->label('Item Title (AR)')->required(),
+                                            Repeater::make('videos')
+                                                ->relationship('videos')
+                                                ->schema([
+                                                    Hidden::make('code'),
+                                                    FileUpload::make('video_file')->label('Upload Video'),
+                                                ])
+                                                ->collapsed(),
+                                        ])
+                                        ->collapsed(),
+                                ])
+                                ->collapsed(),
+                        ]),
+                    ]),
+                ])
+                ->columnSpanFull(),
+        ]);
     }
+
 
     public static function table(Table $table): Table
     {

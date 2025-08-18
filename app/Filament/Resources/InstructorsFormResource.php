@@ -46,10 +46,10 @@ class InstructorsFormResource extends Resource
     {
         return __('filament/forms/FormsInstructors.plural');
     }
- static public function GenerateNewCode()
+    static public function GenerateNewCode()
     {
         $code = \Illuminate\Support\Str::random(5);
-        if (InstructorsInstructorsM::where('code', $code)->exists()) {
+        if (UsersUsersM::where('code', $code)->exists()) {
             return Self::GenerateNewCode();
         } else {
             return $code;
@@ -96,54 +96,65 @@ class InstructorsFormResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id'),
-                TextColumn::make('name_en')
-                ->label(__('filament/forms/FormsInstructors.name_en')),
-                TextColumn::make('email')->label(__('filament/forms/FormsInstructors.email')),
-                TextColumn::make('phone')->label(__('filament/forms/FormsInstructors.phone')),
-                TextColumn::make('experince')->label(__('filament/forms/FormsInstructors.experince')),
-                TextColumn::make('message')->label(__('filament/forms/FormsInstructors.message')),
-                ImageColumn::make("image")->label(__('filament/forms/FormsInstructors.image')),
+    TextColumn::make('id'),
+    TextColumn::make('name_en')->label(__('filament/forms/FormsInstructors.name_en')),
+    TextColumn::make('email')->label(__('filament/forms/FormsInstructors.email')),
+    TextColumn::make('phone')->label(__('filament/forms/FormsInstructors.phone')),
+    TextColumn::make('experince')->label(__('filament/forms/FormsInstructors.experince')),
+    TextColumn::make('message')->label(__('filament/forms/FormsInstructors.message')),
+    ImageColumn::make("image")->label(__('filament/forms/FormsInstructors.image')),
+    TextColumn::make('status')
+        ->label(__('Status'))
+        ->getStateUsing(fn($record) => $record->status ?? 'Pending')
+        ->color(fn($record) => match($record->status ?? 'Pending') {
+            'Accepted' => 'success',
+            'Rejected' => 'danger',
+            default => 'primary',
+        }),
+])
+->actions([
+    Tables\Actions\ViewAction::make(),
 
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Action::make('accept')
-                ->label(__('filament/forms/FormsInstructors.accept'))
-                ->icon('heroicon-o-check-circle')
-                ->requiresConfirmation()
-                ->action(function ($record) {
-                    $password = Str::random(8);
-                    UsersUsersM::create([
-                        'code' => self::GenerateNewCode(),
-                        'name_en' => $record->name_en,
-                        'name_ar' => $record->name_ar,
-                        'email' => $record->email,
-                        'phone' => $record->phone,
-                        'experince' => $record->experince,
-                        'linkedIn' => $record->linkedIn,
-                        'facebook' => $record->facebook,
-                        'cv' => $record->cv,
-                        'image' => $record->image,
-                        'password' => Hash::make($password),
-                        'role_id' =>2,
-                    ]);
-                    $record->save();
-                Mail::to($record->email)->send(new InstructorAccepted($password, $record->name_en, $record->email));
-                }),
-                Action::make('reject')
-                ->label(__('filament/forms/FormsInstructors.reject'))
-                ->icon('heroicon-o-x-circle')
-                ->color('danger')
-                ->requiresConfirmation()
-                ->action(function ($record) {
-                $record->delete();
-             }),
+    Action::make('accept')
+        ->label(__('filament/forms/FormsInstructors.accept'))
+        ->icon('heroicon-o-check-circle')
+        ->requiresConfirmation()
+        ->visible(fn($record) => $record->status !== 'Accepted' && $record->status !== 'Rejected')
+        ->action(function ($record) {
+            $password = Str::random(8);
+            UsersUsersM::create([
+                'code' => self::GenerateNewCode(),
+                'name_en' => $record->name_en,
+                'name_ar' => $record->name_ar,
+                'email' => $record->email,
+                'phone' => $record->phone,
+                'experince' => $record->experince,
+                'linkedIn' => $record->linkedIn,
+                'facebook' => $record->facebook,
+                'cv' => $record->cv,
+                'image' => $record->image,
+                'password' => Hash::make($password),
+                'role_id' =>2,
+            ]);
 
-            ])
+            $record->status = 'Accepted';
+            $record->save();
+
+            Mail::to($record->email)->send(new InstructorAccepted($password, $record->name_en, $record->email));
+        }),
+
+    Action::make('reject')
+        ->label(__('filament/forms/FormsInstructors.reject'))
+        ->icon('heroicon-o-x-circle')
+        ->color('danger')
+        ->requiresConfirmation()
+        ->visible(fn($record) => $record->status !== 'Accepted' && $record->status !== 'Rejected')
+        ->action(function ($record) {
+            $record->status = 'Rejected';
+            $record->save();
+        }),
+])
+
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

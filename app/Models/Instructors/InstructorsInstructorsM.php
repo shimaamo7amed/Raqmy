@@ -12,7 +12,7 @@ class InstructorsInstructorsM extends Model
     protected $table = "users_instructors";
     public $timestamps = true;
 
-     protected $fillable = [
+    protected $fillable = [
     'code',
     'name_en',
     'name_ar',
