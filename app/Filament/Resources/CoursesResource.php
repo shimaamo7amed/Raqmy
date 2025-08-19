@@ -355,7 +355,30 @@ class CoursesResource extends Resource
                                                 ->relationship('videos')
                                                 ->schema([
                                                     Hidden::make('code'),
-                                                    FileUpload::make('video_file')->label('Upload Video'),
+                                                    FileUpload::make('video')
+                                                ->label('Upload Video')
+                                                ->acceptedFileTypes([
+                                                    'video/mp4',
+                                                    'video/quicktime', 
+                                                    'video/x-msvideo',
+                                                    'video/webm'
+                                                ])
+                                                ->maxSize(500 * 1024) // 500MB
+                                                ->minSize(1024) // 1MB minimum
+                                                ->directory('videos/' . date('Y/m'))
+                                                ->visibility('private')
+                                                ->storeFileNamesIn('video_filename')
+                                                ->rules([
+                                                    'required',
+                                                    function ($attribute, $value, $fail) {
+                                                        // Custom validation logic
+                                                        $videoInfo = new \getID3();
+                                                        $fileInfo = $videoInfo->analyze($value->getRealPath());
+                                                        if ($fileInfo['playtime_seconds'] > 600) { // 10 minutes max
+                                                            $fail('Video must be less than 10 minutes long.');
+                                                        }
+                                                    }
+                                                ])
                                                 ])
                                                 ->collapsed(),
                                         ])
